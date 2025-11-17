@@ -11,4 +11,15 @@
     --color-mainColor: #67BF6E;
     --color-secondaryColor: #73C479;
     --color-mainGray: #D1D1D1;
+    --color-thirdColor: #A8FFAE;
+}
+
+@layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
 }

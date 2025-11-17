@@ -7,7 +7,7 @@
 
         {{-- Nav Link --}}
         <div id="navlink" class="flex gap-12">
-            <a href="#home" class="hover:">Home</a>
+            <a href="#beranda" class="hover:">Beranda</a>
             <a href="#layanan" class="">Layanan</a>
             <a href="#pesan" class="">Pesan</a>
         </div>
