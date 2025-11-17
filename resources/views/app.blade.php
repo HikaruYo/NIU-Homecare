@@ -1,29 +1,28 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Niu Homecare</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     @vite('resources/css/app.css')
+    @vite('resources/js/app.js')
 </head>
-<body class="">
+<body class="w-full bg-gray-50">
 
 @include('layout.header')
 
-
-
-    <div class="mx-28 mt-8 bg-gray-50">
+    <div id="home" class="h-screen bg-gray-50">
         @include('components.homepage')
     </div>
-    <div class="mx-28 bg-mainColor">
+    <div id="layanan" class="h-sreen bg-mainColor">
         @include('components.layanan')
     </div>
+    <div id="pesan" class="h-screen bg-gray-50">
+        @include('components.pesan')
+    </div>
 
-
-<div class="fixed bottom-4 right-6 cursor-pointer">
-    arrow
-</div>
+@include('layout.scrollUpButton')
 
 @include('layout.footer')
 

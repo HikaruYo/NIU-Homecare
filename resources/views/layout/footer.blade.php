@@ -1,3 +1,3 @@
-<div class="text-center">
+<div class="text-center bg-mainColor">
     footer
 </div>
