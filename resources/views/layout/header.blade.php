@@ -7,15 +7,66 @@
 
         {{-- Nav Link --}}
         <div id="navlink" class="flex gap-12">
-            <a href="#beranda" class="hover:">Beranda</a>
-            <a href="#layanan" class="">Layanan</a>
-            <a href="#pesan" class="">Pesan</a>
+            <a href="#beranda"
+               class="relative
+              after:bg-mainColor
+              after:absolute
+              after:h-[2px]
+              after:w-full
+              after:bottom-0
+              after:left-0
+              after:scale-x-0
+              after:origin-right
+              hover:after:scale-x-100
+              hover:after:origin-left
+              after:transition-transform
+              after:duration-300
+              cursor-pointer"
+            >
+                Beranda
+            </a>
+            <a href="#layanan"
+               class="relative
+              after:bg-mainColor
+              after:absolute
+              after:h-[2px]
+              after:w-full
+              after:bottom-0
+              after:left-0
+              after:scale-x-0
+              after:origin-right
+              hover:after:scale-x-100
+              hover:after:origin-left
+              after:transition-transform
+              after:duration-300
+              cursor-pointer"
+            >
+                Layanan
+            </a>
+            <a href="#pesan"
+               class="relative
+              after:bg-mainColor
+              after:absolute
+              after:h-[2px]
+              after:w-full
+              after:bottom-0
+              after:left-0
+              after:scale-x-0
+              after:origin-right
+              hover:after:scale-x-100
+              hover:after:origin-left
+              after:transition-transform
+              after:duration-300
+              cursor-pointer"
+            >
+                Pesan
+            </a>
         </div>
 
         {{-- Profile --}}
-        <div>
+        <a href="/login">
             Login
-        </div>
+        </a>
     </div>
 
     <style>

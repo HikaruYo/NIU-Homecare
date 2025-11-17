@@ -12,7 +12,7 @@
 
 @include('layout.header')
 
-    <div id="home" class="h-screen bg-gray-50">
+    <div id="beranda" class="h-screen bg-gray-50">
         @include('components.homepage')
     </div>
     <div id="layanan" class="h-sreen bg-mainColor">
