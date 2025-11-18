@@ -1,14 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 
-use App\Models\Layanan;
-
-Route::get('/', function () {
-    // mengambil semua data di tabel layanan
-    $layanans = Layanan::all();
-    return view('app', compact('layanans'));
-});
+Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/login', function () {
     return view('login');

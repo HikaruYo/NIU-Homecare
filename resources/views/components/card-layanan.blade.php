@@ -24,7 +24,7 @@
                     <div class="w-fit text-black px-2 py-1 text-sm font-light bg-linear-to-r from-secondaryColor to-thirdColor rounded-full">
 
                         @if($layanan->is_flexible_duration)
-                            Mulai dari Rp. {{ number_format($layanan->harga_per_30menit, 0, ',', '.') }}/30 menit
+                            Rp. {{ number_format($layanan->harga_per_30menit, 0, ',', '.') }}/30 menit
                         @else
                             Rp. {{ number_format($layanan->nominal, 0, ',', '.') }}
                         @endif

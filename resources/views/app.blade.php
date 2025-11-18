@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Niu Homecare</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
 </head>
@@ -19,7 +22,7 @@
         @include('components.layanan', ['layanans' => $layanans])
     </div>
     <div id="pesan" class="h-screen bg-gray-50">
-        @include('components.pesan')
+        @include('components.pesan', ['slots' => $slots])
     </div>
 
 @include('layout.scrollUpButton')
