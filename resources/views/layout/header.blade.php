@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Auth; @endphp
 <header class="fixed w-full top-0 z-10 bg-white">
     <div class="flex w-full justify-between px-28 py-4 shadow-sm">
         {{-- LOGO --}}
@@ -64,9 +65,24 @@
         </div>
 
         {{-- Profile --}}
-        <a href="/login">
-            Login
-        </a>
+        <div class="flex items-center">
+            @if(Auth::check())
+                @php
+                    $user = Auth::user();
+                    $full = $user->username;
+                    $short = strlen($full) > 8 ? substr($full, 0, 8) . '..' : $full;
+                @endphp
+
+                <span class="text-gray-800">
+                    Hi, {{ $short }}
+                </span>
+            @else
+                <a href="/login" class="hover:underline">
+                    Login
+                </a>
+            @endif
+        </div>
+
     </div>
 
     <style>
