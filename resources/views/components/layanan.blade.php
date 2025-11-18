@@ -10,7 +10,7 @@
     </h1>
 
     <div class="overflow-x-auto overscroll-none no-scrollbar">
-        @include('components.card-layanan')
+        @include('components.card-layanan', ['layanans' => $layanans])
     </div>
 
 </div>

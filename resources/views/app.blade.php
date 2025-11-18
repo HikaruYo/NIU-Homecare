@@ -16,7 +16,7 @@
         @include('components.homepage')
     </div>
     <div id="layanan" class="h-sreen bg-mainColor">
-        @include('components.layanan')
+        @include('components.layanan', ['layanans' => $layanans])
     </div>
     <div id="pesan" class="h-screen bg-gray-50">
         @include('components.pesan')

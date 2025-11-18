@@ -7,7 +7,7 @@
 
         {{-- Nav Link --}}
         <div id="navlink" class="flex gap-12">
-            <a href="#beranda"
+            <a href="/#beranda"
                class="relative
               after:bg-mainColor
               after:absolute
@@ -25,7 +25,7 @@
             >
                 Beranda
             </a>
-            <a href="#layanan"
+            <a href="/#layanan"
                class="relative
               after:bg-mainColor
               after:absolute
@@ -43,7 +43,7 @@
             >
                 Layanan
             </a>
-            <a href="#pesan"
+            <a href="/#pesan"
                class="relative
               after:bg-mainColor
               after:absolute
