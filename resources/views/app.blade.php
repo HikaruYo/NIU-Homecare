@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth overscroll-none no-scrollbar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +11,20 @@
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
 </head>
-<body class="w-full bg-gray-50">
+<body class="w-full bg-gray-50 ">
+@if (session('successLogin'))
+    <div id="popup"
+         class="fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-50 transition-opacity duration-500">
+        {{ session('successLogin') }}
+    </div>
+@endif
+
+@if ($errors->any())
+    <div id="popup-error"
+         class="fixed top-4 right-4 bg-red-600 text-white px-4 py-2 rounded shadow-lg z-50 transition-opacity duration-500">
+        {{ $errors->first() }}
+    </div>
+@endif
 
 @include('layout.header')
 

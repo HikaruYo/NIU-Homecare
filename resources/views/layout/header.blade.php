@@ -73,9 +73,38 @@
                     $short = strlen($full) > 8 ? substr($full, 0, 8) . '..' : $full;
                 @endphp
 
-                <span class="text-gray-800">
-                    Hi, {{ $short }}
-                </span>
+                {{-- Dropdown Container --}}
+                <div class="relative">
+                    {{-- Trigger --}}
+                    <button
+                        id="profileDropdownBtn"
+                        type="button"
+                        class="flex items-center text-gray-800 focus:outline-none"
+                    >
+                        Hi, {{ $short }}
+                        <svg class="w-6 h-6 ml-1 transition-transform duration-300" id="dropdownArrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4-4h8l-4 4"/></svg>
+                    </button>
+
+                    {{-- Dropdown Menu --}}
+                    <div
+                        id="profileDropdownMenu"
+                        class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-50 py-2 hidden border border-gray-200"
+                    >
+                        <a href="/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            Dashboard
+                        </a>
+
+                        <form method="POST" action="{{ url('/logout') }}">
+                            @csrf
+                            <button
+                                type="submit"
+                                class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                            >
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
             @else
                 <a href="/login" class="hover:underline">
                     Login

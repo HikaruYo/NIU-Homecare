@@ -8,24 +8,25 @@ import {
 
 initTWE({ Ripple });
 
-const mybutton = document.getElementById("btn-back-to-top");
 
-if (mybutton) {
+
+const upButton = document.getElementById("btn-back-to-top");
+if (upButton) {
     const scrollFunction = () => {
         if (
             document.body.scrollTop > 20 ||
             document.documentElement.scrollTop > 20
         ) {
-            mybutton.classList.remove("hidden");
+            upButton.classList.remove("hidden");
         } else {
-            mybutton.classList.add("hidden");
+            upButton.classList.add("hidden");
         }
     };
     const backToTop = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    mybutton.addEventListener("click", backToTop);
+    upButton.addEventListener("click", backToTop);
     window.addEventListener("scroll", scrollFunction);
 }
 
@@ -79,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Date Picker
 document.addEventListener("DOMContentLoaded", function () {
-
     const fp = flatpickr("#datepicker", {
         dateFormat: "Y-m-d",
         altInput: true,
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// Pop-up after register
+// Pop-up after register/login
 setTimeout(() => {
     const pSuccess = document.getElementById('popup');
     const pError = document.getElementById('popup-error');
@@ -126,4 +126,33 @@ setTimeout(() => {
     hidePopup(pSuccess);
     hidePopup(pError);
 
-}, 7000);
+}, 5000);
+
+
+// Logic Dropdown Profile
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdownBtn = document.getElementById('profileDropdownBtn');
+    const dropdownMenu = document.getElementById('profileDropdownMenu');
+    const dropdownArrow = document.getElementById('dropdownArrow');
+
+    // Pastikan elemen ada di halaman (hanya muncul saat user login)
+    if (dropdownBtn && dropdownMenu) {
+        dropdownBtn.addEventListener('click', function (event) {
+            // Mencegah event click menyebar ke window document
+            event.stopPropagation();
+
+            dropdownMenu.classList.toggle('hidden');
+            dropdownArrow.classList.toggle('rotate-180');
+        });
+
+        // Sembunyikan dropdown saat klik di luar area dropdown
+        window.addEventListener('click', function (event) {
+            if (!dropdownMenu.classList.contains('hidden')) {
+                if (!dropdownMenu.contains(event.target) && event.target !== dropdownBtn) {
+                    dropdownMenu.classList.add('hidden');
+                    dropdownArrow.classList.remove('rotate-180');
+                }
+            }
+        });
+    }
+});

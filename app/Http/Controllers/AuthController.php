@@ -36,7 +36,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect('/login')->with('success', 'Akun berhasil dibuat! Silakan login.');
+        return redirect('/login')->with('successRegister', 'Akun berhasil dibuat! Silakan login.');
     }
 
     // Handle login
@@ -49,7 +49,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('/')->with('success', 'Berhasil login!');
+            return redirect('/')->with('successLogin', 'Berhasil login!');
         }
 
         return back()->withErrors([
