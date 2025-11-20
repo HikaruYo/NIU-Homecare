@@ -156,3 +156,18 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+
+// Remove Status Alert after Editing Profile
+document.addEventListener('DOMContentLoaded', function () {
+    const alert = document.getElementById('status-alert');
+
+    if (alert) {
+        setTimeout(() => {
+            alert.classList.add('opacity-0');
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 1000);
+        }, 7000);
+    }
+});

@@ -14,7 +14,7 @@
 <body class="w-full bg-gray-50 ">
 @if (session('successLogin'))
     <div id="popup"
-         class="fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-50 transition-opacity duration-500">
+         class="fixed top-16 right-4 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-50 transition-opacity duration-500">
         {{ session('successLogin') }}
     </div>
 @endif
