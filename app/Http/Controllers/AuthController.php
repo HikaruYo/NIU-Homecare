@@ -67,30 +67,4 @@ class AuthController extends Controller
 
         return redirect('/login');
     }
-
-    // Handle update profile
-    public function updateProfile(Request $request)
-    {
-        $user = Auth::user();
-
-        $request->validate([
-            'username' => [
-                'required',
-                'string',
-                'max:50',
-                // Pastikan username unik, kecuali untuk user saat ini
-                Rule::unique('users')->ignore($user->id),
-            ],
-            'no_hp' => 'nullable|string|max:15',
-            'alamat' => 'nullable|string|max:255',
-        ]);
-
-        $user->username = $request->username;
-        $user->no_hp = $request->no_hp;
-        $user->alamat = $request->alamat;
-
-        $user->save();
-
-        return redirect()->route('dashboard', ['tab' => 'profil'])->with('status', 'Profil berhasil diperbarui!');
-    }
 }

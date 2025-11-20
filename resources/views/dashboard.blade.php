@@ -12,18 +12,13 @@
     @vite('resources/js/app.js')
 </head>
 <body class="w-full bg-gray-50 h-screen">
-@if(Auth::check())
+{{--@if(Auth::check())--}}
     @php
-        $user = auth()->user();
-        $full = $user->username;
-        $short = strlen($full) > 20 ? substr($full, 0, 20) . '..' : $full;
-        $email = $user->email;
-        $no_hp = $user->no_hp;
-        $alamat = $user->alamat;
+//        $user = auth()->user();
 
         $currentTab = request()->query('tab', 'profil'); // default profil
     @endphp
-@endif
+{{--@endif--}}
 
 <div class="flex w-full">
     {{-- Side Bar --}}
