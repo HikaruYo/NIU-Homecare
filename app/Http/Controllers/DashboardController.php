@@ -25,10 +25,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
-        return $user->role === 'admin'
-            ? view('admin.dashboard', array_merge($this->userData()))
-            : view('dashboard.profil', array_merge($this->userData()));
+        return view('dashboard.profil', array_merge($this->userData()));
     }
 
     public function profil()
@@ -46,20 +43,20 @@ class DashboardController extends Controller
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
-
         $request->validate([
             'username' => 'required|string|max:50',
             'no_hp' => 'nullable|string|max:15',
             'alamat' => 'nullable|string|max:255',
         ]);
 
+//        Mengubah nama, no hp, dan alamat sesuai dari form edit yang diisi pengguna
         $user->update($request->only('username', 'no_hp', 'alamat'));
-
         return redirect()->route('dashboard.profil')->with('status', 'Profil berhasil diperbarui!');
     }
 
     public function edit()
     {
+//        Menampilkan Form Edit Profil
         return view('dashboard.profil', array_merge($this->userData(), [
             'currentTab' => 'profil',
             'isEditMode' => true,

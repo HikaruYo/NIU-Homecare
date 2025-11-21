@@ -12,7 +12,7 @@ class JadwalController extends Controller
     {
         $tanggal = $req->query('tanggal', Carbon::tomorrow()->format('Y-m-d'));
 
-        // Grab all slots in that date
+        // Mengambil semua slot jadwal di hari itu
         $slots = SlotJadwal::where('tanggal', $tanggal)
             ->orderBy('waktu', 'asc')
             ->get();

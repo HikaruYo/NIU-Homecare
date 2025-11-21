@@ -5,7 +5,7 @@
         </div>
 
         <div class="font-light text-lg px-4 py-3 mt-5">
-            Hai, {{ $short }}
+            Hai, Admin {{ $short }}
         </div>
 
         @php
@@ -13,16 +13,22 @@
             $inactive = 'text-gray-700 hover:bg-gray-300';
         @endphp
 
-        <a href="{{ route('dashboard.profil') }}"
+        <a href="{{ route('admin.dashboard.layanan') }}"
            class="flex m-3 items-center p-3 rounded-lg transition duration-300
-           {{ $currentTab === 'profil' ? $active : $inactive }}">
-            Profil Pengguna
+           {{ $currentTab === 'layanan' ? $active : $inactive }}">
+            Daftar Layanan
         </a>
 
-        <a href="{{ route('dashboard.histori') }}"
+        <a href="{{ route('admin.dashboard.booking') }}"
            class="flex m-3 items-center p-3 rounded-lg transition duration-300
-           {{ $currentTab === 'histori' ? $active : $inactive }}">
-            Riwayat Pemesanan
+           {{ $currentTab === 'booking' ? $active : $inactive }}">
+            Daftar Booking
+        </a>
+
+        <a href="{{ route('admin.dashboard.laporan') }}"
+           class="flex m-3 items-center p-3 rounded-lg transition duration-300
+           {{ $currentTab === 'laporan' ? $active : $inactive }}">
+            Laporan Penghasilan
         </a>
     </div>
 

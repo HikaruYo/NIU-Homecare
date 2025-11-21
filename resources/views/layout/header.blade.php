@@ -80,7 +80,7 @@
                         type="button"
                         class="flex items-center text-gray-800 focus:outline-none"
                     >
-                        Hi, {{ $short }}
+                        Hai, {{ $short }}
                         <svg class="w-6 h-6 ml-1 transition-transform duration-300" id="dropdownArrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4-4h8l-4 4"/></svg>
                     </button>
 

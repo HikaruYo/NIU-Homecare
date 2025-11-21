@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Layanan;
 use App\Models\SlotJadwal;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,7 +25,11 @@ class HomeController extends Controller
             ->pluck('tanggal')
             ->toArray();
 
-        return view('app', compact('layanans','slots','tanggal','allDates'));
+        $user = Auth::user();
+
+        return $user->role !== 'admin'
+            ? view('app', compact('layanans','slots','tanggal','allDates'))
+            : view('admin.dashboard');
     }
 
 }
