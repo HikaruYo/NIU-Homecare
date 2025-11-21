@@ -45,7 +45,7 @@
         <div>
             <button
                 onclick="window.location='{{ route('admin.dashboard.layanan.tambah') }}'"
-                class="bg-mainColor p-2 rounded-xl hover:shadow-md transition duration-300 cursor-pointer"
+                class="bg-mainColor p-2 rounded-md hover:shadow-md transition duration-300 cursor-pointer"
             >
                 Tambah Layanan
             </button>
@@ -53,7 +53,7 @@
     </div>
 
     <div class="px-6 pb-6">
-        <table class="w-full bg-white rounded-lg shadow">
+        <table class="w-full bg-white shadow">
             <thead class="bg-gray-100">
             <tr>
                 <th class="p-3 text-left">Nama Layanan</th>
@@ -73,7 +73,7 @@
                     <td class="p-3">{{ $l->durasi }} menit</td>
                     <td class="p-3 flex gap-2">
                         <a href="{{ route('admin.dashboard.layanan.edit', $l->layanan_id) }}"
-                           class="px-3 py-1 bg-yellow-500 text-white rounded">
+                           class="px-3 py-1 bg-mainGray text-white rounded">
                             Edit
                         </a>
 
@@ -81,7 +81,7 @@
                               action="{{ route('admin.dashboard.layanan.destroy', $l->layanan_id) }}"
                               onsubmit="return confirm('Hapus layanan ini?')">
                             @csrf @method('DELETE')
-                            <button class="px-3 py-1 bg-red-600 text-white rounded">
+                            <button class="px-3 py-1 bg-red-600 text-white rounded cursor-pointer">
                                 Hapus
                             </button>
                         </form>

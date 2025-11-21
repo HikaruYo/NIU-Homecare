@@ -74,7 +74,7 @@
                 <label for="username" class="font-medium">Nama Pengguna</label>
                 <div>
                     <input type="text" name="username" id="username" value="{{ old('username', $full) }}"
-                           class="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 @error('username') border-red-500 @enderror">
+                           class="w-full p-2 bg-white rounded-lg focus:ring-blue-500 focus:border-blue-500 @error('username') border-red-500 @enderror">
                     @error('username')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -86,7 +86,7 @@
                 <label for="no_hp" class="font-medium">Nomor Handphone</label>
                 <div>
                     <input type="text" name="no_hp" id="no_hp" value="{{ old('no_hp', $no_hp) }}"
-                           class="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 @error('no_hp') border-red-500 @enderror">
+                           class="w-full p-2 bg-white rounded-lg focus:ring-blue-500 focus:border-blue-500 @error('no_hp') border-red-500 @enderror">
                     @error('no_hp')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -98,7 +98,7 @@
                 <label for="alamat" class="font-medium">Alamat</label>
                 <div>
                     <textarea name="alamat" id="alamat" rows="3"
-                              class="w-full p-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 @error('alamat') border-red-500 @enderror">{{ old('alamat', $alamat) }}</textarea>
+                              class="w-full p-2 bg-white rounded-lg focus:ring-blue-500 focus:border-blue-500 @error('alamat') border-red-500 @enderror">{{ old('alamat', $alamat) }}</textarea>
                     @error('alamat')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -108,11 +108,11 @@
             {{-- Action Button --}}
             <div class="flex gap-4">
                 <button type="submit"
-                        class="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow hover:bg-green-600 transition duration-150 cursor-pointer">
+                        class="px-4 py-2 bg-mainColor text-white font-semibold rounded-lg hover:shadow-lg transition duration-150 cursor-pointer">
                     Simpan Perubahan
                 </button>
                 <a href="{{ route('dashboard.profil') }}"
-                   class="px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow hover:bg-gray-400 transition duration-150">
+                   class="px-4 py-2 bg-gray-400 text-gray-800 font-semibold rounded-lg hover:shadow-lg transition duration-150">
                     Batal
                 </a>
             </div>

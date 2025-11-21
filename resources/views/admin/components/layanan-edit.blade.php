@@ -1,8 +1,10 @@
 @extends('admin.dashboard')
 
 @section('content')
-    <div class="p-6">
-        <h1 class="text-3xl font-semibold mb-4">Edit Layanan</h1>
+    <div class="flex flex-col w-full h-full gap-4 bg-mainGray shadow-lg rounded-lg">
+        <div class="mx-6 py-2.5 text-4xl font-semibold border-b-2 border-gray-200">
+            Edit Layanan
+        </div>
 
         @if ($errors->any())
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
@@ -15,33 +17,33 @@
         @endif
 
         <form enctype="multipart/form-data" method="POST" action="{{ route('admin.dashboard.layanan.update', $layanan->layanan_id) }}"
-            class="grid grid-cols-2 gap-2"
+            class="grid grid-cols-2 gap-2 px-6"
         >
             @csrf
             @method('PUT')
 
             <div class="">
                 <label>Nama Layanan</label>
-                <input type="text" name="nama_layanan" class="w-full p-2 rounded border"
+                <input type="text" name="nama_layanan" class="w-full p-2 rounded bg-white"
                        value="{{ old('nama_layanan', $layanan->nama_layanan) }}">
             </div>
 
             <div class="">
                 <label>Tarif</label>
-                <input type="number" name="nominal" class="w-full p-2 rounded border"
+                <input type="number" name="nominal" class="w-full p-2 rounded bg-white"
                        value="{{ old('nominal', $layanan->nominal) }}">
             </div>
 
             <div class="">
                 <label>Deskripsi</label>
-                <input type="text" name="deskripsi" class="w-full p-2 rounded border"
+                <input type="text" name="deskripsi" class="w-full p-2 rounded bg-white"
                         value="{{ old('deskripsi', $layanan->deskripsi) }}"
                 >
             </div>
 
             <div class="">
                 <label>Durasi (30 menit)</label>
-                <input type="number" name="durasi" class="w-full p-2 rounded border"
+                <input type="number" name="durasi" class="w-full p-2 rounded bg-white"
                        value="{{ old('durasi', $layanan->durasi) }}">
             </div>
 
@@ -63,14 +65,14 @@
 
             <div class="">
                 <label>Tarif per 30 menit</label>
-                <input type="number" name="harga_per_30menit" class="w-full p-2 rounded border"
+                <input type="number" name="harga_per_30menit" class="w-full p-2 rounded bg-white"
                        value="{{ old('harga_per_30menit', $layanan->harga_per_30menit) }}">
             </div>
 
             <div>
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Gambar Layanan</label>
-                    <input type="file" name="gambar" class="border p-2 w-full rounded-lg">
+                    <input type="file" name="gambar" class=" p-2 w-full rounded-lg bg-white outline-none">
 
                     @if($layanan->gambar)
                         <div class="mt-2">
