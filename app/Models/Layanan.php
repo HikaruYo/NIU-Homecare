@@ -8,9 +8,12 @@ class Layanan extends Model
 {
     protected $table = 'layanans';
     protected $primaryKey = 'layanan_id';
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     protected $fillable = [
         'nama_layanan',
+        'gambar',
         'nominal',
         'deskripsi',
         'durasi',

@@ -13,6 +13,10 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            return redirect()->route('admin.dashboard.layanan');
+        }
+
         $layanans = Layanan::all();
         $tanggal = $request->query('tanggal', Carbon::tomorrow()->format('Y-m-d'));
 

@@ -11,4 +11,86 @@
     <div class="mx-6 py-2.5 text-4xl font-semibold border-b-2 border-gray-200">
         Daftar Layanan
     </div>
+
+    <div class="flex justify-between items-center w-full px-6">
+        {{-- Dropdown Container --}}
+        <div class="relative">
+            {{-- Trigger --}}
+            <button
+                id="profileDropdownBtn"
+                type="button"
+                class="flex items-center cursor-pointer text-gray-800 focus:outline-none"
+            >
+                Filter berdasarkan
+                <svg class="w-6 h-6 ml-1 transition-transform duration-300" id="dropdownArrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4-4h8l-4 4"/></svg>
+            </button>
+
+            {{-- Dropdown Menu --}}
+            <div
+                id="profileDropdownMenu"
+                class="absolute mt-2 w-44 bg-white rounded-lg shadow-xl z-50 py-2 hidden border border-gray-200"
+            >
+                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Harga
+                </button>
+                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Durasi
+                </button>
+                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Ditambahkan
+                </button>
+            </div>
+        </div>
+
+        <div>
+            <button
+                onclick="window.location='{{ route('admin.dashboard.layanan.tambah') }}'"
+                class="bg-mainColor p-2 rounded-xl hover:shadow-md transition duration-300 cursor-pointer"
+            >
+                Tambah Layanan
+            </button>
+        </div>
+    </div>
+
+    <div class="px-6 pb-6">
+        <table class="w-full bg-white rounded-lg shadow">
+            <thead class="bg-gray-100">
+            <tr>
+                <th class="p-3 text-left">Nama Layanan</th>
+                <th class="p-3 text-left">Tarif</th>
+                <th class="p-3 text-left">Deskripsi</th>
+                <th class="p-3 text-left">Durasi</th>
+                <th class="p-3 text-left">Aksi</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            @foreach($layanan as $l)
+                <tr class="border-t">
+                    <td class="p-3">{{ $l->nama_layanan }}</td>
+                    <td class="p-3">Rp {{ number_format($l->nominal, 0, ',', '.') }}</td>
+                    <td class="p-3">{{ $l->deskripsi }}</td>
+                    <td class="p-3">{{ $l->durasi }} menit</td>
+                    <td class="p-3 flex gap-2">
+                        <a href="{{ route('admin.dashboard.layanan.edit', $l->layanan_id) }}"
+                           class="px-3 py-1 bg-yellow-500 text-white rounded">
+                            Edit
+                        </a>
+
+                        <form method="POST"
+                              action="{{ route('admin.dashboard.layanan.destroy', $l->layanan_id) }}"
+                              onsubmit="return confirm('Hapus layanan ini?')">
+                            @csrf @method('DELETE')
+                            <button class="px-3 py-1 bg-red-600 text-white rounded">
+                                Hapus
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+
+        </table>
+    </div>
+
 </div>

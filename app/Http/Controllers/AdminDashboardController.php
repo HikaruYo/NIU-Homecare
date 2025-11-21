@@ -33,8 +33,10 @@ class AdminDashboardController extends Controller
 
     public function layanan()
     {
-        // Tambahkan logic pengambilan data layanan di sini nanti
-        $data = array_merge($this->userData(), ['currentTab' => 'layanan']);
+        $data = array_merge($this->userData(), [
+            'currentTab' => 'layanan',
+            'layanan' => \App\Models\Layanan::orderBy('created_at', 'desc')->get()
+        ]);
         return view('admin.dashboard.layanan', $data);
     }
 
