@@ -1,5 +1,5 @@
 <div class="flex flex-col w-full h-full gap-4 bg-mainGray shadow-lg rounded-lg">
-    {{-- Notifikasi Sukses --}}
+    {{-- Notification --}}
     @if (session('status'))
         <div id="status-alert"
              class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg right-2 absolute mb-4 transition-opacity duration-1000 ease-out"
@@ -8,7 +8,7 @@
         </div>
     @endif
     @php
-        $isEditMode = request()->query('edit', false) || $errors->any();
+        $isEditMode = $isEditMode ?? false;
     @endphp
 
     <div class="mx-6 py-2.5 text-4xl font-semibold border-b-2 border-gray-200">
@@ -53,7 +53,7 @@
     {{-- Edit Profile --}}
     @if (!$isEditMode)
         <div class="ml-5">
-            <a href="{{ url('/dashboard?tab=profil&edit=true') }}"
+            <a href="{{ route('profile.edit') }}"
                class="inline-block px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition duration-150">
                 Edit Profil
             </a>
@@ -111,7 +111,7 @@
                         class="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow hover:bg-green-600 transition duration-150 cursor-pointer">
                     Simpan Perubahan
                 </button>
-                <a href="{{ url('/dashboard?tab=profil') }}"
+                <a href="{{ route('dashboard.profil') }}"
                    class="px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow hover:bg-gray-400 transition duration-150">
                     Batal
                 </a>

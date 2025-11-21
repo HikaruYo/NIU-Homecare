@@ -89,7 +89,7 @@
                         id="profileDropdownMenu"
                         class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-50 py-2 hidden border border-gray-200"
                     >
-                        <a href="/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <a href="/dashboard/profil" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                             Dashboard
                         </a>
 

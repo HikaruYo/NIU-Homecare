@@ -13,10 +13,15 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// TODO: Add middleware for dashboard
+
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::put('/profile', [DashboardController::class, 'updateProfile'])
+    Route::redirect('/dashboard', '/dashboard/profil');
+    Route::get('/dashboard/profil', [DashboardController::class, 'profil'])->name('dashboard.profil');
+    Route::get('/dashboard/histori', [DashboardController::class, 'histori'])->name('dashboard.histori');
+
+    Route::get('/dashboard/profil/edit', [DashboardController::class, 'edit'])
+        ->name('profile.edit');
+    Route::put('/dashboard/profil', [DashboardController::class, 'updateProfile'])
         ->name('profile.update');
 });
 

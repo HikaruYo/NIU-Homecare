@@ -7,39 +7,63 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index(){
+    private function userData()
+    {
         $user = Auth::user();
         $full = $user->username;
         $short = strlen($full) > 20 ? substr($full, 0, 20) . '..' : $full;
-        $email = $user->email;
-        $no_hp = $user->no_hp;
-        $alamat = $user->alamat;
 
-        return $user->role === 'admin'
-            ? view('admin.dashboard', compact('user', 'full', 'short', 'email', 'no_hp', 'alamat'))
-            : view('dashboard', compact('user', 'full', 'short', 'email', 'no_hp', 'alamat'));
+        return [
+            'user'   => $user,
+            'full'   => $full,
+            'short'  => $short,
+            'email'  => $user->email,
+            'no_hp'  => $user->no_hp,
+            'alamat' => $user->alamat,
+        ];
     }
 
-    // Handle update profile
+    public function index()
+    {
+        $user = Auth::user();
+        return $user->role === 'admin'
+            ? view('admin.dashboard', array_merge($this->userData()))
+            : view('dashboard.profil', array_merge($this->userData()));
+    }
+
+    public function profil()
+    {
+        return view('dashboard.profil', $this->userData())
+            ->with('currentTab', 'profil');
+    }
+
+    public function histori()
+    {
+        return view('dashboard.histori', $this->userData())
+            ->with('currentTab', 'histori');
+    }
+
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
 
         $request->validate([
-            'username' => [
-                'required',
-                'string',
-                'max:50',
-            ],
+            'username' => 'required|string|max:50',
             'no_hp' => 'nullable|string|max:15',
             'alamat' => 'nullable|string|max:255',
         ]);
 
-        $user->username = $request->username;
-        $user->no_hp = $request->no_hp;
-        $user->alamat = $request->alamat;
-        $user->save();
+        $user->update($request->only('username', 'no_hp', 'alamat'));
 
-        return redirect()->route('dashboard', ['tab' => 'profil'])->with('status', 'Profil berhasil diperbarui!');
+        return redirect()->route('dashboard.profil')->with('status', 'Profil berhasil diperbarui!');
+    }
+
+    public function edit()
+    {
+        return view('dashboard.profil', array_merge($this->userData(), [
+            'currentTab' => 'profil',
+            'isEditMode' => true,
+        ]));
     }
 }
+
