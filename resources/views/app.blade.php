@@ -28,15 +28,15 @@
 
 @include('layout.header')
 
-    <div id="beranda" class="h-screen bg-gray-50">
-        @include('components.homepage')
-    </div>
-    <div id="layanan" class="h-sreen bg-mainColor">
-        @include('components.layanan', ['layanans' => $layanans])
-    </div>
-    <div id="pesan" class="h-screen bg-gray-50">
-        @include('components.pesan', ['slots' => $slots])
-    </div>
+<div id="beranda" class="h-screen bg-gray-50">
+    @include('layout.homepage')
+</div>
+<div id="layanan" class="h-sreen bg-mainColor">
+    @include('layout.layanan', ['layanans' => $layanans])
+</div>
+<div id="pesan" class="h-screen bg-gray-50">
+    @include('layout.pesan', ['slots' => $slots])
+</div>
 
 @include('layout.scrollUpButton')
 

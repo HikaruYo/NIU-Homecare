@@ -13,6 +13,8 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
+//        Handle untuk mengecek jika admin yang login maka langsung diarahkan ke dashboard admin
+//        tanpa memiliki izin untuk melihat halaman utama
         if (Auth::check() && Auth::user()->role === 'admin') {
             return redirect()->route('admin.dashboard.layanan');
         }
@@ -31,9 +33,7 @@ class HomeController extends Controller
 
         $user = Auth::user();
 
-        return $user->role !== 'admin'
-            ? view('app', compact('layanans','slots','tanggal','allDates'))
-            : view('admin.dashboard');
+        return view('app', compact('layanans','slots','tanggal','allDates'));
     }
 
 }

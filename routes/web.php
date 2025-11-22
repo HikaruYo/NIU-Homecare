@@ -3,11 +3,11 @@
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminLayananController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
-// Route untuk semua user (guest dan authenticated)
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -33,6 +33,10 @@ Route::middleware(['auth'])->group(function () {
         ->name('profile.edit');
     Route::put('/dashboard/profil', [DashboardController::class, 'updateProfile'])
         ->name('profile.update');
+
+    // Booking route
+    Route::get('/booking', [BookingController::class, 'create'])->name('booking.create');
+    Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
 });
 
 Route::middleware(['admin'])->group(function () {
