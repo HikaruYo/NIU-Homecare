@@ -159,6 +159,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// Dropdown Filter Admin
+document.addEventListener('DOMContentLoaded', function () {
+    const filterBtn = document.getElementById('filterDropdownBtn');
+    const filterMenu = document.getElementById('filterDropdownMenu');
+    const filterArrow = document.getElementById('filterDropdownArrow');
+
+    if (filterBtn && filterMenu) {
+        filterBtn.addEventListener('click', function (event) {
+            event.stopPropagation();
+            filterMenu.classList.toggle('hidden');
+            filterArrow.classList.toggle('rotate-180');
+        });
+
+        window.addEventListener('click', function (event) {
+            if (!filterMenu.classList.contains('hidden')) {
+                if (!filterMenu.contains(event.target) && event.target !== filterBtn) {
+                    filterMenu.classList.add('hidden');
+                    filterArrow.classList.remove('rotate-180');
+                }
+            }
+        });
+    }
+});
+// TODO: buat filter untuk halaman dashboard
+
 
 // Memunculkan/menghilangkan status alert buatan
 document.addEventListener('DOMContentLoaded', function () {

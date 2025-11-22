@@ -14,12 +14,14 @@ class BookingSlot extends Model
         'slot_jadwal_id'
     ];
 
+    // Relasi ke Booking Utama
     public function booking(): BelongsTo
     {
         return $this->belongsTo(Booking::class, 'booking_id', 'booking_id');
     }
 
-    public function slot(): BelongsTo
+    // Relasi ke Master Slot Jadwal (Ini yang dicari oleh error tadi)
+    public function slotJadwal(): BelongsTo
     {
         return $this->belongsTo(SlotJadwal::class, 'slot_jadwal_id', 'slot_jadwal_id');
     }

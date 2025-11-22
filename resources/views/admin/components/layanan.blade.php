@@ -13,22 +13,23 @@
     </div>
 
     <div class="flex justify-between items-center w-full px-6">
+        {{-- TODO: buat filter --}}
         {{-- Dropdown Container --}}
         <div class="relative">
             {{-- Trigger --}}
             <button
-                id="profileDropdownBtn"
+                id="filterDropdownBtn"
                 type="button"
                 class="flex items-center cursor-pointer text-gray-800 focus:outline-none"
             >
-                Filter berdasarkan
-                <svg class="w-6 h-6 ml-1 transition-transform duration-300" id="dropdownArrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4-4h8l-4 4"/></svg>
+                Urutkan berdasarkan
+                <svg class="w-6 h-6 ml-1 transition-transform duration-300" id="filterDropdownArrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4-4h8l-4 4"/></svg>
             </button>
 
             {{-- Dropdown Menu --}}
             <div
-                id="profileDropdownMenu"
-                class="absolute mt-2 w-44 bg-white rounded-lg shadow-xl z-50 py-2 hidden border border-gray-200"
+                id="filterDropdownMenu"
+                class="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-xl z-50 py-2 hidden border border-gray-200"
             >
                 <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Harga
@@ -53,41 +54,41 @@
     </div>
 
     <div class="px-6 pb-6">
-        <table class="w-full bg-white shadow">
-            <thead class="bg-gray-100">
-            <tr>
-                <th class="p-3 text-left">Nama Layanan</th>
-                <th class="p-3 text-left">Tarif</th>
-                <th class="p-3 text-left">Deskripsi</th>
-                <th class="p-3 text-left">Durasi</th>
-                <th class="p-3 text-left">Aksi</th>
-            </tr>
+        <table class="w-full bg-white shadow rounded-lg">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="p-3 text-left">Nama Layanan</th>
+                    <th class="p-3 text-left">Tarif</th>
+                    <th class="p-3 text-left">Deskripsi</th>
+                    <th class="p-3 text-left">Durasi</th>
+                    <th class="p-3 text-left">Aksi</th>
+                </tr>
             </thead>
 
             <tbody>
-            @foreach($layanan as $l)
-                <tr class="border-t">
-                    <td class="p-3">{{ $l->nama_layanan }}</td>
-                    <td class="p-3">Rp {{ number_format($l->nominal, 0, ',', '.') }}</td>
-                    <td class="p-3">{{ $l->deskripsi }}</td>
-                    <td class="p-3">{{ $l->durasi }} menit</td>
-                    <td class="p-3 flex gap-2">
-                        <a href="{{ route('admin.dashboard.layanan.edit', $l->layanan_id) }}"
-                           class="px-3 py-1 bg-mainGray text-white rounded">
-                            Edit
-                        </a>
+                @foreach($layanan as $l)
+                    <tr class="border-b border-gray-300 text-gray-600">
+                        <td class="p-3">{{ $l->nama_layanan }}</td>
+                        <td class="p-3">Rp {{ number_format($l->nominal, 0, ',', '.') }}</td>
+                        <td class="p-3">{{ $l->deskripsi }}</td>
+                        <td class="p-3">{{ $l->durasi }} menit</td>
+                        <td class="p-3 flex gap-2">
+                            <a href="{{ route('admin.dashboard.layanan.edit', $l->layanan_id) }}"
+                               class="px-3 py-1 bg-mainGray text-white rounded">
+                                Edit
+                            </a>
 
-                        <form method="POST"
-                              action="{{ route('admin.dashboard.layanan.destroy', $l->layanan_id) }}"
-                              onsubmit="return confirm('Hapus layanan ini?')">
-                            @csrf @method('DELETE')
-                            <button class="px-3 py-1 bg-red-600 text-white rounded cursor-pointer">
-                                Hapus
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
+                            <form method="POST"
+                                  action="{{ route('admin.dashboard.layanan.destroy', $l->layanan_id) }}"
+                                  onsubmit="return confirm('Hapus layanan ini?')">
+                                @csrf @method('DELETE')
+                                <button class="px-3 py-1 bg-red-600 text-white rounded cursor-pointer">
+                                    Hapus
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
 
         </table>

@@ -58,6 +58,10 @@ Route::middleware(['admin'])->group(function () {
     Route::delete('admin/dashboard/layanan/{id}', [AdminLayananController::class, 'destroy'])
         ->name('admin.dashboard.layanan.destroy');
 
-    Route::get('admin/dashboard/booking', [AdminDashboardController::class, 'booking'])->name('admin.dashboard.booking');
+    Route::get('admin/dashboard/booking', [AdminDashboardController::class, 'booking'])
+        ->name('admin.dashboard.booking');
+    Route::put('admin/dashboard/booking/{id}', [AdminDashboardController::class, 'updateStatus'])
+        ->name('admin.booking.update');
+
     Route::get('admin/dashboard/laporan', [AdminDashboardController::class, 'laporan'])->name('admin.dashboard.laporan');
 });

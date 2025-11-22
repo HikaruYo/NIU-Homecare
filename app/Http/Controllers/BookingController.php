@@ -82,7 +82,7 @@ class BookingController extends Controller
                     'booking_id' => $booking->booking_id,
                     'layanan_id' => $layananId,
                     'durasi'     => $durasiInput, // Simpan durasi dari input user ke DB
-                    'harga'      => $harga        // Simpan harga total (misal 75rb)
+                    'harga'      => $harga        // Simpan harga total
                 ]);
             }
 
@@ -103,7 +103,7 @@ class BookingController extends Controller
             \DB::commit();
 
             return redirect()
-                ->route('dashboard.histori')
+                ->route('dashboard.pesanan')
                 ->with('status', 'Booking berhasil dibuat untuk tanggal ' . $tanggalBooking);
 
         } catch (\Exception $e) {
