@@ -64,7 +64,7 @@
             <div>
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Gambar Layanan</label>
-                    <input type="file" name="gambar" class="bg-white p-2 w-full rounded-lg">
+                    <input type="file" name="gambar" class="bg-white p-2 w-full rounded-lg cursor-pointer">
                 </div>
 
                 <div class="flex gap-4">
