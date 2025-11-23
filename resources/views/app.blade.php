@@ -12,35 +12,36 @@
     @vite('resources/js/app.js')
 </head>
 <body class="w-full bg-gray-50 ">
-@if (session('successLogin'))
-    <div id="popup"
-         class="fixed top-16 right-4 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-50 transition-opacity duration-500">
-        {{ session('successLogin') }}
+    @if (session('successLogin'))
+        <div id="popup"
+             class="fixed top-16 right-4 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-50 transition-opacity duration-500">
+            {{ session('successLogin') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div id="popup-error"
+             class="fixed top-4 right-4 bg-red-600 text-white px-4 py-2 rounded shadow-lg z-50 transition-opacity duration-500">
+            {{ $errors->first() }}
+        </div>
+    @endif
+
+    @include('layout.header')
+
+    {{-- TODO: masukkan gambar sebagai background dengan slider otomatis --}}
+    <div id="beranda" class="h-screen bg-gray-50">
+        @include('layout.homepage')
     </div>
-@endif
-
-@if ($errors->any())
-    <div id="popup-error"
-         class="fixed top-4 right-4 bg-red-600 text-white px-4 py-2 rounded shadow-lg z-50 transition-opacity duration-500">
-        {{ $errors->first() }}
+    <div id="layanan" class="h-sreen bg-mainColor">
+        @include('layout.layanan', ['layanans' => $layanans])
     </div>
-@endif
+    <div id="pesan" class="h-screen bg-gray-50">
+        @include('layout.pesan', ['slots' => $slots])
+    </div>
 
-@include('layout.header')
+    @include('layout.scrollUpButton')
 
-<div id="beranda" class="h-screen bg-gray-50">
-    @include('layout.homepage')
-</div>
-<div id="layanan" class="h-sreen bg-mainColor">
-    @include('layout.layanan', ['layanans' => $layanans])
-</div>
-<div id="pesan" class="h-screen bg-gray-50">
-    @include('layout.pesan', ['slots' => $slots])
-</div>
-
-@include('layout.scrollUpButton')
-
-@include('layout.footer')
+    @include('layout.footer')
 
 </body>
 

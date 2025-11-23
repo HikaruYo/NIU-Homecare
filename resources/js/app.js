@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Reset opsi durasi
                 durasiSelect.innerHTML = "";
-                for (let m = 30; m <= 180; m += 30) { // Membatasi maksimal layanan fleksibel hingga 3 jam
+                for (let m = 30; m <= 60; m += 30) { // Membatasi maksimal layanan fleksibel hingga 3 jam
                     const op = document.createElement("option");
                     op.value = m;
                     op.textContent = m + " menit";
