@@ -26,7 +26,7 @@
                 @include('components.pilih-layanan')
             </div>
 
-            <div class="mt-6 w-1/6">
+            <div class="mt-8 w-1/6">
                 <button
                     type="submit"
                     class="flex w-full justify-center items-center gap-3 px-5 py-2 text-lg rounded-full bg-secondaryColor cursor-pointer hover:shadow-md transition duration-300"

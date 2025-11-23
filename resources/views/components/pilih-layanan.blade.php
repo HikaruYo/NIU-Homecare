@@ -4,7 +4,7 @@
         <p class="text-gray-600">Pilih Jenis Layanan</p>
     </div>
 
-    <div id="layanan-wrapper" class="space-y-1">
+    <div id="layanan-wrapper" class="max-h-32 overflow-y-auto">
         {{-- Template untuk membuat baris pilih layanan baru --}}
         <template id="layanan-template">
             <div class="flex items-center gap-4 layanan-row pb-1">
@@ -67,7 +67,7 @@
         + Tambah Layanan
     </button>
 
-    <div class="mt-4 text-xl font-semibold">
+    <div class="mt-2 text-xl font-semibold">
         Total: <span id="total-harga">Rp 0</span>
     </div>
 </div>

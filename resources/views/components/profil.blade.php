@@ -108,7 +108,7 @@
             {{-- Action Button --}}
             <div class="flex gap-4">
                 <button type="submit"
-                        class="px-4 py-2 bg-mainColor text-white font-semibold rounded-lg hover:shadow-lg transition duration-150 cursor-pointer">
+                        class="px-4 py-2 bg-mainColor font-semibold rounded-lg hover:shadow-lg transition duration-150 cursor-pointer">
                     Simpan Perubahan
                 </button>
                 <a href="{{ route('dashboard.profil') }}"

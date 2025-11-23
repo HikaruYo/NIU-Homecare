@@ -15,6 +15,7 @@ class BookingController extends Controller
 {
     // TODO: buat agar slot yang dipesan bertambah 2 secara otomatis (membuat jeda selama 1 jam antara pesanan)
     // TODO: buat admin dapat men-disable slot jadwal (tutup)
+    // TODO: buat agar user dapat membatalkan booking (menghapus hingga data booking yang dilakukan user)
 
     // Form booking
     public function create()
@@ -103,7 +104,7 @@ class BookingController extends Controller
             \DB::commit();
 
             return redirect()
-                ->route('dashboard.pesanan')
+                ->route('dashboard.histori')
                 ->with('status', 'Booking berhasil dibuat untuk tanggal ' . $tanggalBooking);
 
         } catch (\Exception $e) {
