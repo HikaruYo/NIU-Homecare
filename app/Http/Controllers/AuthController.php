@@ -22,6 +22,7 @@ class AuthController extends Controller
         return view('register');
     }
 
+    // TODO: Buat agar email menjadi unique
     // Handle signup
     public function register(Request $request)
     {

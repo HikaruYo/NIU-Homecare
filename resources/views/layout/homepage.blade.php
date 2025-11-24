@@ -10,8 +10,8 @@
     </div>
 
     <div class="w-1/2 ">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et pretium nibh, in placerat arcu.
-        Ut rutrum porttitor augue, sit amet ullamcorper.
+        Butuh perawatan cepat tanpa ribet? NIU menyediakan layanan homecare yang fleksibel dan mudah dipesan.
+        Pilih layanan, pilih waktu, dan kami akan datang ke rumah Anda.
     </div>
 
     <div class="flex gap-6 items-center text-lg">

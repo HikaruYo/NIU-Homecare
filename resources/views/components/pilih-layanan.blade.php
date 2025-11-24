@@ -1,7 +1,7 @@
 <div class="w-1/2 pl-5">
     {{-- Header --}}
     <div class="flex w-full items-center border-b-[2px] border-b-mainGray">
-        <p class="text-gray-600">Pilih Jenis Layanan</p>
+        <p class="">Pilih Jenis Layanan</p>
     </div>
 
     <div id="layanan-wrapper" class="max-h-32 overflow-y-auto">

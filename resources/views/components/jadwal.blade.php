@@ -1,9 +1,9 @@
 <div class="w-1/2 pr-5">
     {{-- Header --}}
     <div class="flex justify-between border-b-[2px] border-b-mainGray">
-        <p class="text-gray-600">Pilih Tanggal dan Waktu</p>
+        <p class="">Pilih Tanggal dan Waktu</p>
 
-        <div class="flex items-center">
+        <div class="flex items-center cursor-pointer" id="openDatePicker">
             {{-- Ikon Kalender --}}
             <svg id="animated-calendar" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                  viewBox="0 0 24 24">
@@ -20,7 +20,7 @@
             <p class="pl-2 font-medium">{{ $tanggalFormatted ?? (\Carbon\Carbon::parse($tanggal ?? now())->format('d F Y')) }}</p>
 
             {{-- Ikon Arrow yang membuka Kalender --}}
-            <svg id="openDatePicker" class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                 <path fill="currentColor" d="m18 9l-6-6l-6 6zm0 6l-6 6l-6-6z" />
             </svg>
         </div>
