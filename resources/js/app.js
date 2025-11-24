@@ -446,3 +446,85 @@ document.addEventListener("DOMContentLoaded", () => {
         return true;
     }
 });
+
+
+// Konfirmasi booking
+document.addEventListener("DOMContentLoaded", () => {
+    const btnPreSubmit = document.getElementById('btn-pre-submit');
+    const modal = document.getElementById('confirmationModal');
+    const btnCancel = document.getElementById('btn-cancel-modal');
+
+    // Elemen untuk summary di modal
+    const modalList = document.getElementById('modal-summary-list');
+    const modalTotal = document.getElementById('modal-total-price');
+    const modalTime = document.getElementById('modal-time-range');
+
+    // Input hidden di main form
+    const inputStartTime = document.getElementById('start_time');
+    const inputEndTime = document.getElementById('end_time');
+
+    // Fungsi Tampilkan Modal
+    btnPreSubmit.addEventListener('click', () => {
+        // Cek apakah ada layanan dan waktu dipilih
+        const layananRows = document.querySelectorAll("#layanan-wrapper .layanan-row:not(template .layanan-row)");
+        const hasService = Array.from(layananRows).some(row => {
+            const select = row.querySelector('.layanan-select');
+            return select && select.value;
+        });
+
+        if (!hasService) {
+            alert("Silakan pilih minimal satu layanan.");
+            return;
+        }
+
+        if (!inputStartTime.value || !inputEndTime.value) {
+            alert("Silakan pilih jam mulai pada jadwal.");
+            return;
+        }
+
+        // Isi Data Summary ke Modal
+        modalList.innerHTML = ''; // Reset list
+        let grandTotal = 0;
+
+        layananRows.forEach(row => {
+            const select = row.querySelector('.layanan-select');
+            const hargaField = row.querySelector('.harga-field');
+            const durasiInput = row.querySelector('.durasi-input');
+
+            if (select && select.value) {
+                const namaLayanan = select.options[select.selectedIndex].text.trim();
+                const harga = parseInt(hargaField.dataset.value || 0);
+                const durasi = durasiInput.value;
+
+                grandTotal += harga;
+
+                // Buat elemen HTML list item
+                const item = document.createElement('div');
+                item.className = "flex justify-between border-b border-dashed pb-1";
+                item.innerHTML = `
+                        <span class="text-gray-800">${namaLayanan} <span class="text-xs text-gray-500">(${durasi} mnt)</span></span>
+                        <span class="font-medium">Rp ${harga.toLocaleString('id-ID')}</span>
+                    `;
+                modalList.appendChild(item);
+            }
+        });
+
+        modalTotal.textContent = "Rp " + grandTotal.toLocaleString('id-ID');
+        modalTime.textContent = `${inputStartTime.value} s/d ${inputEndTime.value}`;
+
+        // Tampilkan Modal
+        modal.classList.remove('hidden');
+    });
+
+    // Fungsi Tutup Modal
+    btnCancel.addEventListener('click', () => {
+        modal.classList.add('hidden');
+    });
+
+    // Tutup modal jika klik di luar area modal
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.add('hidden');
+        }
+    });
+});

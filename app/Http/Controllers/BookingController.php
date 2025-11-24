@@ -34,6 +34,8 @@ class BookingController extends Controller
             'layanan_id.*'    => 'required|exists:layanans,layanan_id',
             'durasi'          => 'required|array', // Durasi dari input user
             'slot_jadwal_id'  => 'required|array',
+            'no_hp'           => 'string|max:15',
+            'alamat'          => 'string|max:255',
         ]);
 
         // Validasi ketersediaan slot, mencegah tabrakan jadwal
@@ -54,6 +56,14 @@ class BookingController extends Controller
 
         \DB::beginTransaction();
         try {
+            // Update Data User (Alamat & No HP)
+            // Data user akan selalu diupdate dengan inputan terakhir dari form konfirmasi
+            $user = Auth::user();
+            $user->update([
+                'no_hp' => $req->no_hp,
+                'alamat' => $req->alamat
+            ]);
+
             // Simpan booking
             $booking = Booking::create([
                 'user_id' => Auth::id(),
@@ -65,7 +75,6 @@ class BookingController extends Controller
             // Menggunakan $key untuk mencocokkan layanan ke-sekian dengan durasi ke-sekian
             foreach ($req->layanan_id as $key => $layananId) {
                 $layan = Layanan::find($layananId);
-
                 // Ambil durasi dari input user (jika merupakan layanan dengan durasi fleksibel
                 // fallback int 30 jika kosong/error
                 $durasiInput = (int) ($req->durasi[$key] ?? 30);
