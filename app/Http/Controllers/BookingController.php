@@ -20,7 +20,7 @@ class BookingController extends Controller
     // Form booking
     public function create()
     {
-        return view('booking.create', [
+        return view('layout.pesan', [
             'layanans' => Layanan::all(),
             'slots' => SlotJadwal::where('is_available', true)->get()
         ]);

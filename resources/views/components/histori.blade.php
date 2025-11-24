@@ -48,10 +48,12 @@
 
     <div class="mx-6 mb-4 overflow-y-auto no-scrollbar">
         @if($bookings->isEmpty())
-            <div class="text-center text-gray-500 mt-10">
+            <div class="text-center text-lg text-gray-500 mt-10">
                 <p>Belum ada riwayat pemesanan.</p>
-                <a href="{{ route('booking.create') }}" class="text-mainColor underline hover:text-thirdColor">Pesan
-                    sekarang</a>
+                <a href="{{ url('/') }}#pesan" class="text-mainColor underline hover:text-shadow-green-600"
+                >
+                    Pesan sekarang
+                </a>
             </div>
         @else
             <div class="grid gap-6">

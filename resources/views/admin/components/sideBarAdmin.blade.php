@@ -35,8 +35,8 @@
     <div class="p-4">
         <form method="POST" action="{{ url('/logout') }}">
             @csrf
-            <button class="w-full px-4 py-2 text-lg text-red-600 rounded-lg hover:bg-gray-100 shadow transition cursor-pointer">
-                Logout
+            <button class="w-full px-4 py-2 text-lg text-red-600 rounded-lg bg-gray-300 hover:bg-gray-100 shadow transition cursor-pointer">
+                Keluar
             </button>
         </form>
     </div>

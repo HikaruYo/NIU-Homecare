@@ -11,7 +11,7 @@ class SlotJadwalSeeder extends Seeder
     public function run(): void
     {
         $startDate = Carbon::today();
-        $endDate   = Carbon::today()->addMonths(3); // generate 3 bulan
+        $endDate   = Carbon::today()->addMonths(3); // generate 3 bulan mulai dari hari ini
 
         $startTime = Carbon::createFromTime(9, 0);  // 09.00
         $endTime   = Carbon::createFromTime(19, 0); // 19.00

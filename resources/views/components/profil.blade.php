@@ -60,6 +60,10 @@
         </div>
     @endif
 
+    {{-- TODO: buat laporan singkat sudah berapa kali memesan layanan, berapa yang berhasil, ditolak, atau menunggu --}}
+    {{-- TODO: bikin grid-3 menyamping, yang akan muncul jika form edit profil kosong, dan akan hilang jika user edit profil --}}
+    {{-- TODO: biking component seperti membuka profil dan histori --}}
+
     {{-- Edit Profile Form --}}
     <div id="edit-mode" class="{{ $isEditMode ? 'block' : 'hidden' }}">
         <div class="mx-5 text-2xl font-semibold text-gray-800">
