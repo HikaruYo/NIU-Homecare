@@ -1,9 +1,9 @@
 <div class="w-1/2 pr-5">
     {{-- Header --}}
-    <div class="flex justify-between border-b-[2px] border-b-mainGray">
+    <div class="flex justify-between text-lg">
         <p class="">Pilih Tanggal dan Waktu</p>
 
-        <div class="flex items-center cursor-pointer" id="openDatePicker">
+        <div class="flex items-center cursor-pointer border-b-[2px] border-b-mainGray" id="openDatePicker">
             {{-- Ikon Kalender --}}
             <svg id="animated-calendar" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                  viewBox="0 0 24 24">

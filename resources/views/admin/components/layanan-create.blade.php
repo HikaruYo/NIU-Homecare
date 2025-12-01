@@ -34,7 +34,7 @@
 
             <div>
                 <label>Deskripsi</label>
-                <input type="text" name="deskripsi" value="{{ old('deskripsi') }}" class="w-full p-2 rounded bg-white">
+                <textarea name="deskripsi" class="w-full p-2 rounded bg-white">{{ old('deskripsi') }}</textarea>
             </div>
 
             <div>

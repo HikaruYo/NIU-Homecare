@@ -27,25 +27,31 @@
             </div>
 
             {{-- Tombol Trigger Modal Konfirmasi Pembayaran --}}
-            <div class="mt-8 w-1/5">
-                @auth
-                    <button
-                        type="button"
-                        id="btn-pre-submit"
-                        class="flex w-full justify-center items-center gap-3 px-5 py-2 text-lg rounded-full bg-secondaryColor cursor-pointer hover:shadow-md transition duration-300 text-white"
-                    >
-                        Pesan
-                    </button>
-                @endauth
+            <div class="w-full flex h-fit items-center gap-5">
+                <div class="mt-8 w-1/2">
+                    @auth
+                        <button
+                            type="button"
+                            id="btn-pre-submit"
+                            class="flex w-1/3 justify-center items-center gap-3 px-5 py-2 text-lg rounded-full bg-secondaryColor cursor-pointer hover:shadow-md transition duration-300 text-white"
+                        >
+                            Pesan
+                        </button>
+                    @endauth
 
-                @guest
-                    <a
-                        href="{{ route('login') }}"
-                        class="flex w-full justify-center items-center gap-3 px-2 py-1 text-lg rounded-full bg-gray-500 cursor-pointer hover:bg-gray-600 transition duration-300 text-white text-center"
-                    >
-                        Login untuk Memesan
-                    </a>
-                @endguest
+                    @guest
+                        <a
+                            href="{{ route('login') }}"
+                            class="flex w-1/2 justify-center items-center gap-3 px-2 py-1 text-lg rounded-full bg-gray-500 cursor-pointer hover:bg-gray-600 transition duration-300 text-white text-center"
+                        >
+                            Login untuk Memesan
+                        </a>
+                    @endguest
+                </div>
+
+                <div class="mt-8 text-xl font-semibold">
+                    Total: <span id="total-harga">Rp 0</span>
+                </div>
             </div>
 
             {{-- Modal Konfirmasi Pembayaran --}}
@@ -78,7 +84,7 @@
 
                             {{-- Input No HP --}}
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp / HP <span class="text-red-500">*</span></label>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp<span class="text-red-500">*</span></label>
                                 <input
                                     type="text"
                                     name="no_hp"

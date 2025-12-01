@@ -1,10 +1,10 @@
 <div class="w-1/2 pl-5">
     {{-- Header --}}
-    <div class="flex w-full items-center border-b-[2px] border-b-mainGray">
+    <div class="flex w-full items-center text-lg">
         <p class="">Pilih Jenis Layanan</p>
     </div>
 
-    <div id="layanan-wrapper" class="max-h-32 overflow-y-auto">
+    <div id="layanan-wrapper" class="max-h-40 overflow-y-auto">
         {{-- Template untuk membuat baris pilih layanan baru --}}
         <template id="layanan-template">
             <div class="flex items-center gap-4 layanan-row pb-1">
@@ -23,7 +23,7 @@
 
                 <div class="w-1/4">
                     {{-- Class untuk layanan yang memiliki durasi fleksibel --}}
-                    <select class="durasi-select p-2 rounded w-full hidden cursor-pointer"></select>
+                    <select class="durasi-select p rounded w-full hidden cursor-pointer"></select>
                     {{-- Menunjukkan durasi layanan jika layanan tidak memiliki durasi fleksibel --}}
                     <span class="durasi-text font-medium hidden"></span>
                     <input type="hidden" name="durasi[]" class="durasi-input" value="0">
@@ -67,7 +67,7 @@
         + Tambah Layanan
     </button>
 
-    <div class="mt-2 text-xl font-semibold">
-        Total: <span id="total-harga">Rp 0</span>
-    </div>
+{{--    <div class="mt-2 text-xl font-semibold">--}}
+{{--        Total: <span id="total-harga">Rp 0</span>--}}
+{{--    </div>--}}
 </div>

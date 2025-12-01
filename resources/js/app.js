@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // TODO: buat filter untuk halaman dashboard
 
 
-// Memunculkan/menghilangkan status alert buatan
+// Memunculkan/menghilangkan status alert
 document.addEventListener('DOMContentLoaded', function () {
     const alert = document.getElementById('status-alert');
 
@@ -448,7 +448,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// Konfirmasi booking
+// Konfirmasi booking modal
 document.addEventListener("DOMContentLoaded", () => {
     const btnPreSubmit = document.getElementById('btn-pre-submit');
     const modal = document.getElementById('confirmationModal');

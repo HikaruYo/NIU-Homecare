@@ -29,9 +29,16 @@
     @include('layout.header')
 
     {{-- TODO: masukkan gambar sebagai background dengan slider otomatis --}}
-    <div id="beranda" class="h-screen bg-gray-50">
+    <div id="beranda" class="h-screen bg-gray-50"
+        style="
+            {{--background-image: url('{{ asset('assets/potong-rambut.jpeg') }}');--}}
+            background-size: cover;
+            background-position: center;
+        "
+    >
         @include('layout.homepage')
     </div>
+
     <div id="layanan" class="h-sreen bg-mainColor">
         @include('layout.layanan', ['layanans' => $layanans])
     </div>

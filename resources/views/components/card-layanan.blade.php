@@ -1,18 +1,13 @@
-<style>
-    .layanan-card {
-        background-size: cover;
-        background-position: center;
-    }
-</style>
-
 <div class="flex gap-4 w-max">
 
     @foreach($layanans as $layanan)
         <div
-            class="w-48 h-64 rounded-lg text-white overflow-hidden relative group cursor-pointer layanan-card"
+            class="w-48 h-64 rounded-lg text-white overflow-hidden relative group cursor-pointer"
             style="
                 background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)),
                 url('{{ $layanan->gambar ? asset('storage/' . $layanan->gambar) : asset('assets/default.jpg') }}');
+                background-size: cover;
+                background-position: center;
             "
         >
             <div
