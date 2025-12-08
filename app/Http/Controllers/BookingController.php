@@ -105,7 +105,7 @@ class BookingController extends Controller
                 $totalTagihan += $harga;
                 $listLayananDikirim[] = [
                     'nama_layanan' => $layan->nama_layanan ?? 'Layanan ID: '.$layananId,
-                    'durasi' => $durasiInput . ' menit',
+                    'durasi' => $durasiInput,
                 ];
             }
 
@@ -127,11 +127,23 @@ class BookingController extends Controller
 
             // Kirim data ke n8n setelah commit DB berhasil
             try {
+                // Ambil slot pertama yang dipilih user sebagai "Jam Mulai"
+                $slotPertamaId = $req->slot_jadwal_id[0] ?? null;
+                $jamMulai = '00:00'; // Default fallback
+
+                if ($slotPertamaId) {
+                    $slotData = SlotJadwal::find($slotPertamaId);
+                    if ($slotData) {
+                        // Ambil kolom 'waktu' dari tabel slot_jadwals
+                        $jamMulai = \Carbon\Carbon::parse($slotData->waktu)->format('H:i');
+                    }
+                }
+
                 // Payload JSON
                 $payloadN8n = [
                     'booking_id' => $booking->booking_id,
-                    'tanggal_dibuat' => now()->format('Y-m-d H:i:s'),
-                    'tanggal_booking' => $booking->tanggal_booking->format('Y-m-d'),
+                    'tanggal_booking' => $booking->tanggal_booking->locale('id')->isoFormat('dddd, D MMMM Y'),
+                    'jam_booking' => $jamMulai,
                     'customer' => [
                         'nama' => $user->username,
                         'email' => $user->email,
