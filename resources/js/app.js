@@ -209,6 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const slotItems = document.querySelectorAll(".slot-item");
 
     const rupiah = (n) => "Rp " + n.toLocaleString('id-ID');
+    const BUFFER_MINUTES = 60;
 
     function updateTotal() {
         let total = 0;
@@ -259,7 +260,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Logic untuk mengganti layanan yang ingin dipesan
         select.addEventListener("change", () => {
+            const currentVal = select.value;
             const opt = select.selectedOptions[0];
+
+            // Cek apakah layanan ini sudah dipilih di baris lain
+            let isDuplicate = false;
+            const allSelects = document.querySelectorAll(".layanan-select");
+            allSelects.forEach(otherSelect => {
+                // Pastikan bukan elemen yang sama dan value-nya sama
+                if (otherSelect !== select && otherSelect.value === currentVal && currentVal !== "") {
+                    isDuplicate = true;
+                }
+            });
+
+            if (isDuplicate) {
+                alert("Layanan ini sudah dipilih sebelumnya. Silakan pilih layanan lain.");
+                select.value = ""; // Reset pilihan
+                // Reset tampilan harga/durasi ke 0
+                durasiSelect.classList.add("hidden");
+                durasiText.classList.add("hidden");
+                durasiInput.value = 0;
+                hargaField.textContent = "Rp 0";
+                hargaField.dataset.value = 0;
+                updateTotal();
+                resetSlotSelection();
+                return;
+            }
 
             // Jika user pilih "Pilih Layanan" (kosong) / belum memilih
             if (!opt || !opt.value) {
@@ -341,7 +367,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Logic untuk memilih slot jadwal
     function resetSlotSelection() {
-        // Fungsi helper untuk clear slot jika layanan berubah
         if(slotsContainer) slotsContainer.innerHTML = "";
         document.querySelector("#start_time").value = "";
         document.querySelector("#end_time").value = "";
@@ -363,44 +388,47 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Kalkulasi waktu selesai
+            // Hitung waktu layanan
             const [h, m] = start.split(":").map(Number);
             const startDate = new Date(2000, 1, 1, h, m);
-            const endDate = new Date(startDate.getTime() + totalDurasi * 60000);
-            const end = endDate.toTimeString().slice(0,5);
 
-            // Cek ketersediaan slot
-            if (!cekSlotAvailable(start, end)) {
-                alert("Durasi layanan melebihi slot waktu yang tersedia.");
+            // Waktu selesai layanan (Tampilan UI)
+            const serviceEndDate = new Date(startDate.getTime() + totalDurasi * 60000);
+
+            // Waktu Selesai Booking + Buffer (Logic Database)
+            const bookingEndDate = new Date(startDate.getTime() + (totalDurasi + BUFFER_MINUTES) * 60000);
+
+            // Format String HH:mm
+            const endServiceStr = serviceEndDate.toTimeString().slice(0,5);
+            const endBookingStr = bookingEndDate.toTimeString().slice(0,5);
+
+            // Cek ketersediaan slot (termasuk buffer)
+            if (!cekSlotAvailable(start, endBookingStr)) {
+                alert(`Slot waktu tidak cukup (memerlukan jeda ${BUFFER_MINUTES} menit setelah layanan). Silakan pilih jam lain.`);
                 return;
             }
 
             // Update Tampilan UI
             document.querySelector("#start_time").value = start;
-            document.querySelector("#end_time").value = end;
+            document.querySelector("#end_time").value = endServiceStr;
             document.querySelector("#displayStart").textContent = start;
-            // Fix selector duplicate ID (ambil elemen kedua/end)
+
+            // Fix selector duplicate ID
             const displays = document.querySelectorAll("#displayStart");
-            if(displays.length > 1) displays[1].textContent = end;
+            if(displays.length > 1) displays[1].textContent = endServiceStr;
 
             // Highlight Slot
             slotItems.forEach(s => s.classList.remove("bg-mainColor", "text-white"));
             item.classList.add("bg-mainColor", "text-white");
 
-            // Memastikan input slot ada (agar dapat mengirim data ke DB)
-            if (!slotsContainer) {
-                console.error("Container #selected-slots-container tidak ditemukan di HTML!");
-                return;
-            }
-
-            // Bersihkan input lama
+            // Memastikan input slot ada
+            if (!slotsContainer) return;
             slotsContainer.innerHTML = "";
 
-            let menitTemp = start;
             let loopDate = new Date(startDate);
-            const finalDate = new Date(endDate);
+            const finalDate = bookingEndDate; // Loop sampai durasi + buffer
 
-            // Loop untuk membuat input slot hidden (agar dapat mengirim data ke DB) per 30 menit
+            // Loop untuk membuat input slot hidden
             while (loopDate < finalDate) {
                 const timeStr = loopDate.toTimeString().slice(0, 5); // Format HH:mm
 
@@ -408,10 +436,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 const slotEl = document.querySelector(`.slot-item[data-time='${timeStr}']`);
 
                 if (slotEl) {
-                    // Ambil ID slot dari data-id (components/jadwal.blade.php)
                     const slotId = slotEl.dataset.id;
 
-                    // Buat input hidden dan mengirim data ke Controller
                     const input = document.createElement("input");
                     input.type = "hidden";
                     input.name = "slot_jadwal_id[]";
@@ -419,8 +445,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     slotsContainer.appendChild(input);
                 }
-
-                // Tambah 30 menit
                 loopDate = new Date(loopDate.getTime() + 30 * 60000);
             }
         });
@@ -430,7 +454,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function cekSlotAvailable(start, end) {
         const [h, m] = end.split(":").map(Number);
         const endDate = new Date(2000, 1, 1, h, m);
-
         let loopDate = new Date(2000, 1, 1, ...start.split(":").map(Number));
 
         while (loopDate < endDate) {

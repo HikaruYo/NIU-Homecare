@@ -10,6 +10,8 @@ use App\Models\Layanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
@@ -71,6 +73,10 @@ class BookingController extends Controller
                 'status' => 'menunggu'
             ]);
 
+            // Variabel bantu untuk data n8n
+            $listLayananDikirim = [];
+            $totalTagihan = 0;
+
             // Simpan layanan dan hitung harga sesuai durasi pilihan user
             // Menggunakan $key untuk mencocokkan layanan ke-sekian dengan durasi ke-sekian
             foreach ($req->layanan_id as $key => $layananId) {
@@ -94,6 +100,13 @@ class BookingController extends Controller
                     'durasi'     => $durasiInput, // Simpan durasi dari input user ke DB
                     'harga'      => $harga        // Simpan harga total
                 ]);
+
+                // Kumpulkan data untuk n8n
+                $totalTagihan += $harga;
+                $listLayananDikirim[] = [
+                    'nama_layanan' => $layan->nama_layanan ?? 'Layanan ID: '.$layananId,
+                    'durasi' => $durasiInput . ' menit',
+                ];
             }
 
             // Simpan slot dan update status is_available menjadi false
@@ -111,6 +124,34 @@ class BookingController extends Controller
             }
 
             \DB::commit();
+
+            // Kirim data ke n8n setelah commit DB berhasil
+            try {
+                // Payload JSON
+                $payloadN8n = [
+                    'booking_id' => $booking->booking_id,
+                    'tanggal_dibuat' => now()->format('Y-m-d H:i:s'),
+                    'tanggal_booking' => $booking->tanggal_booking->format('Y-m-d'),
+                    'customer' => [
+                        'nama' => $user->username,
+                        'email' => $user->email,
+                        'whatsapp' => $req->no_hp,
+                        'alamat' => $req->alamat,
+                    ],
+                    'detail_pesanan' => $listLayananDikirim,
+                    'total_biaya' => $totalTagihan,
+                    'status' => 'menunggu'
+                ];
+
+                $n8nUrl = env('N8N_WEBHOOK_URL', 'http://localhost:5678/webhook-test/niu-homecare');
+
+                Http::post($n8nUrl, $payloadN8n);
+
+            } catch (\Exception $e) {
+                // gunakan try-catch terpisah agar jika n8n error/down,
+                // user tetap berhasil booking (tidak error page)
+                Log::error('Gagal mengirim webhook ke n8n: ' . $e->getMessage());
+            }
 
             return redirect()
                 ->route('dashboard.histori')

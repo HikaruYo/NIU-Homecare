@@ -8,7 +8,7 @@
         {{-- Template untuk membuat baris pilih layanan baru --}}
         <template id="layanan-template">
             <div class="flex items-center gap-4 layanan-row pb-1">
-                <select name="layanan_id[]" class="layanan-select p-2 rounded w-1/3 cursor-pointer" required>
+                <select name="layanan_id[]" class="layanan-select p-2 w-1/3 cursor-pointer border-b border-mainGray" required>
                     <option value="" disabled selected>Pilih layanan</option>
                     @foreach ($layanans as $l)
                         <option value="{{ $l->layanan_id }}"
@@ -38,7 +38,7 @@
 
         {{-- Baris pertama --}}
         <div class="flex items-center gap-4 layanan-row">
-            <select name="layanan_id[]" class="layanan-select p-2 rounded w-1/3 cursor-pointer" required>
+            <select name="layanan_id[]" class="layanan-select p-2 w-1/3 cursor-pointer border-b border-mainGray" required>
                 <option value="" disabled selected>Pilih layanan</option>
                 @foreach ($layanans as $l)
                     <option value="{{ $l->layanan_id }}"
