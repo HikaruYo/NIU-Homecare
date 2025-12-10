@@ -13,7 +13,11 @@ class AuthController extends Controller
     // Show login page
     public function showLogin()
     {
-        return view('login');
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        } else {
+            return view('login');
+        }
     }
 
     // Show signup page
@@ -69,6 +73,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect('/login')->with('logout', true);
     }
 }

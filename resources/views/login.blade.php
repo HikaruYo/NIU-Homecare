@@ -23,6 +23,12 @@
     </div>
 @endif
 
+@if(session('logout'))
+    <script>
+        localStorage.setItem("logout", Date.now());
+    </script>
+@endif
+
 @include('layout.header')
 
 <main class="flex h-screen">

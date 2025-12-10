@@ -155,7 +155,7 @@ class BookingController extends Controller
                     'status' => 'menunggu'
                 ];
 
-                $n8nUrl = env('N8N_WEBHOOK_URL', 'http://localhost:5678/webhook-test/niu-homecare');
+                $n8nUrl = env('N8N_WEBHOOK_URL', 'http://localhost:5678/webhook/niu-homecare');
 
                 Http::post($n8nUrl, $payloadN8n);
 

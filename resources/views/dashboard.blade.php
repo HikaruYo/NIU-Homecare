@@ -31,5 +31,13 @@
 
 </div>
 
+<script>
+    window.addEventListener("storage", function(event) {
+        if (event.key === "logout") {
+            window.location.href = "/login";
+        }
+    });
+</script>
+
 </body>
 </html>
