@@ -12,6 +12,12 @@
 </head>
 <body class="w-full h-screen bg-gray-50">
 
+@if(session('login'))
+    <script>
+        localStorage.setItem("login", Date.now());
+    </script>
+@endif
+
 {{-- Default values untuk menghindari error variable undefined --}}
 @php
     $currentTab = $currentTab ?? 'dashboard';
@@ -31,14 +37,6 @@
     </div>
 
 </div>
-
-<script>
-    window.addEventListener("storage", function(event) {
-        if (event.key === "logout") {
-            window.location.href = "/login";
-        }
-    });
-</script>
 
 </body>
 </html>

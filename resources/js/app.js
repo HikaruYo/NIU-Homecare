@@ -76,6 +76,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+window.addEventListener("storage", function(event) {
+    if (event.key === "logout") {
+        window.location.href = "/login";
+    }
+    if (event.key === "login") {
+        if (localStorage.getItem("role") === "admin") {
+            window.location.href = "/admin/dashboard";
+        } else {
+            window.location.href = "/dashboard";
+        }
+    }
+});
+
 
 // Date Picker
 document.addEventListener("DOMContentLoaded", function () {

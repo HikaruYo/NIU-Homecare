@@ -26,6 +26,12 @@
         </div>
     @endif
 
+    @if(session('login'))
+        <script>
+            localStorage.setItem("login", Date.now());
+        </script>
+    @endif
+
     @include('layout.header')
 
     {{-- TODO: masukkan gambar sebagai background dengan slider otomatis --}}
@@ -49,14 +55,6 @@
     @include('layout.scrollUpButton')
 
     @include('layout.footer')
-
-    <script>
-        window.addEventListener("storage", function(event) {
-            if (event.key === "logout") {
-                window.location.href = "/login";
-            }
-        });
-    </script>
 
 </body>
 
