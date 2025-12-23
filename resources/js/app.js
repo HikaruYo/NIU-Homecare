@@ -178,23 +178,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const filterMenu = document.getElementById('filterDropdownMenu');
     const filterArrow = document.getElementById('filterDropdownArrow');
 
-    if (filterBtn && filterMenu) {
-        filterBtn.addEventListener('click', function (event) {
-            event.stopPropagation();
-            filterMenu.classList.toggle('hidden');
-            filterArrow.classList.toggle('rotate-180');
-        });
+    if (!filterBtn) return;
 
-        window.addEventListener('click', function (event) {
-            if (!filterMenu.classList.contains('hidden')) {
-                if (!filterMenu.contains(event.target) && event.target !== filterBtn) {
-                    filterMenu.classList.add('hidden');
-                    filterArrow.classList.remove('rotate-180');
-                }
-            }
-        });
-    }
+    filterBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        filterMenu.classList.toggle('hidden');
+        filterArrow.classList.toggle('rotate-180');
+    });
+
+    window.addEventListener('click', function (e) {
+        if (!filterMenu.contains(e.target) && !filterBtn.contains(e.target)) {
+            filterMenu.classList.add('hidden');
+            filterArrow.classList.remove('rotate-180');
+        }
+    });
 });
+z
 // TODO: buat filter untuk halaman dashboard
 
 

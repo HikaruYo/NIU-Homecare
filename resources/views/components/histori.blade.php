@@ -15,7 +15,7 @@
     <div class="flex justify-between items-center w-full my-4 mx-6">
         {{-- Dropdown Container --}}
         <div class="relative">
-            {{-- Trigger --}}
+            {{-- Filter --}}
             <button
                 id="filterDropdownBtn"
                 type="button"
@@ -43,6 +43,14 @@
                     Ditolak
                 </button>
             </div>
+
+{{--            <select name="filter">--}}
+{{--                <option value="" selected disabled>Filter berdasarkan</option>--}}
+{{--                <option value="menunggu">Menunggu</option>--}}
+{{--                <option value="diterima">Diterima</option>--}}
+{{--                <option value="ditolak">Ditolak</option>--}}
+{{--            </select>--}}
+
         </div>
     </div>
 
