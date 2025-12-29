@@ -63,7 +63,7 @@
 
     </div>
 
-    <button id="add-layanan" class="mt-3 bg-secondaryColor hover:shadow-md text-white px-3 py-2 rounded cursor-pointer">
+    <button id="add-layanan" type="button" class="mt-3 bg-secondaryColor hover:shadow-md text-white px-3 py-2 rounded cursor-pointer">
         + Tambah Layanan
     </button>
 

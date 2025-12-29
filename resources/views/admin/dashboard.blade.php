@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset("LogoNIU.png") }}">
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
 </head>

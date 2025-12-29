@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-z
+
 // TODO: buat filter untuk halaman dashboard
 
 
@@ -370,7 +370,9 @@ document.addEventListener("DOMContentLoaded", () => {
             attachEventToRow(row);
             // Masukkan ke wrapper
             wrapper.appendChild(row);
+            console.log('btn click')
         });
+
     }
 
     // Init Event untuk baris pertama
