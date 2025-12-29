@@ -35,17 +35,28 @@ class DashboardController extends Controller
             ->with('currentTab', 'profil');
     }
 
-    public function histori()
+    public function histori(Request $request)
     {
         // Ambil booking milik user, urutkan dari yang terbaru
         // TODO: buat filter
-        $bookings = Booking::where('user_id', Auth::id())
-            ->with(['bookingLayanans.layanan'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $status = $request->query('status');
 
-        return view('dashboard.histori', compact('bookings'), $this->userData())
-            ->with('currentTab', 'histori');
+        $query = Booking::where('user_id', Auth::id())
+            ->with(['bookingLayanans.layanan'])
+            ->orderBy('tanggal_booking', 'desc');
+
+        // Logika filter berdasarkan status
+        if ($status && in_array($status, ['menunggu', 'diterima', 'ditolak'])) {
+            $query->where('status', $status);
+        }
+
+        $bookings = $query->get();
+
+        return view('dashboard.histori', array_merge($this->userData(), [
+            'bookings' => $bookings,
+            'currentTab' => 'histori',
+            'currentStatus' => $status
+        ]));
     }
 
     public function updateProfile(Request $request)

@@ -1,7 +1,9 @@
 <div class="w-full h-full bg-mainColor shadow-lg rounded-lg flex flex-col justify-between">
     <div>
         <div class="mx-4 py-4 text-xl border-b-[2px] border-b-mainGray">
-            <a href="/">LOGO</a>
+            <a href="/">
+                <img src="{{ asset('assets/LogoNIU.png') }}" alt="Logo" class="w-16 h-10">
+            </a>
         </div>
 
         <div class="font-light text-lg px-4 py-3 mt-5">

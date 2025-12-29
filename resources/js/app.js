@@ -46,7 +46,7 @@ if (calendarSvg) {
 
 
 // Membuat password terlihat/tidak terlihat saat login/register
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function Eye() {
     const passwordInput = document.getElementById('password');
     const passwordConfirmationInput = document.getElementById('password_confirmation');
     const eyeOpen = document.getElementById('eye-open');
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-window.addEventListener("storage", function(event) {
+window.addEventListener("storage", function Redirect(event) {
     if (event.key === "logout") {
         window.location.href = "/login";
     }
@@ -91,7 +91,10 @@ window.addEventListener("storage", function(event) {
 
 
 // Date Picker
-document.addEventListener("DOMContentLoaded", function () {
+const datepickerEl = document.getElementById("datepicker");
+
+if (datepickerEl) {
+    // Jalankan logic flatpickr hanya jika elemen ada
     const fp = flatpickr("#datepicker", {
         dateFormat: "Y-m-d",
         altInput: true,
@@ -117,11 +120,14 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('openDatePicker').addEventListener('click', function () {
         fp.open();
     });
-});
-// Mengambil data tanggal dari date picker agar bisa digunakan ke DB
-datepicker.addEventListener("change", function() {
-    document.querySelector('input[name="tanggal_booking"]').value = this.value;
-});
+
+    datepickerEl.addEventListener("change", function() {
+        const inputBooking = document.querySelector('input[name="tanggal_booking"]');
+        if(inputBooking) {
+            inputBooking.value = this.value;
+        }
+    });
+}
 
 
 
@@ -145,7 +151,7 @@ setTimeout(() => {
 
 
 // Logic Dropdown Profile
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function DropdownProfile() {
     const dropdownBtn = document.getElementById('profileDropdownBtn');
     const dropdownMenu = document.getElementById('profileDropdownMenu');
     const dropdownArrow = document.getElementById('dropdownArrow');
@@ -153,9 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Memastikan elemen ada di halaman dan hanya muncul saat user login
     if (dropdownBtn && dropdownMenu) {
         dropdownBtn.addEventListener('click', function (event) {
-            // Mencegah event click menyebar ke window document
             event.stopPropagation();
-
             dropdownMenu.classList.toggle('hidden');
             dropdownArrow.classList.toggle('rotate-180');
         });
@@ -172,33 +176,35 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Dropdown Filter Admin
-document.addEventListener('DOMContentLoaded', function () {
+// Dropdown Filter
+document.addEventListener('DOMContentLoaded', function DropdownFilter() {
     const filterBtn = document.getElementById('filterDropdownBtn');
     const filterMenu = document.getElementById('filterDropdownMenu');
     const filterArrow = document.getElementById('filterDropdownArrow');
 
-    if (!filterBtn) return;
+    if (filterBtn && filterMenu) {
+        filterBtn.addEventListener('click', function (event) {
+            event.stopPropagation();
+            filterMenu.classList.toggle('hidden');
+            filterArrow.classList.toggle('rotate-180');
+        });
 
-    filterBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        filterMenu.classList.toggle('hidden');
-        filterArrow.classList.toggle('rotate-180');
-    });
-
-    window.addEventListener('click', function (e) {
-        if (!filterMenu.contains(e.target) && !filterBtn.contains(e.target)) {
-            filterMenu.classList.add('hidden');
-            filterArrow.classList.remove('rotate-180');
-        }
-    });
+        // Sembunyikan dropdown saat klik di luar area dropdown
+        window.addEventListener('click', function (event) {
+            if (!filterMenu.classList.contains('hidden')) {
+                if (!filterMenu.contains(event.target) && event.target !== filterBtn) {
+                    filterMenu.classList.add('hidden');
+                    filterArrow.classList.remove('rotate-180');
+                }
+            }
+        });
+    }
 });
-
 // TODO: buat filter untuk halaman dashboard
 
 
 // Memunculkan/menghilangkan status alert
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function StatusAlert() {
     const alert = document.getElementById('status-alert');
 
     if (alert) {

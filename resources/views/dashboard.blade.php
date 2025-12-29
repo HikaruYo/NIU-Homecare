@@ -32,16 +32,5 @@
 
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const btn = document.getElementById('filterDropdownBtn');
-        const menu = document.getElementById('filterDropdownMenu');
-
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
-    });
-</script>
-
 </body>
 </html>
