@@ -46,6 +46,7 @@ if (calendarSvg) {
 
 
 // Membuat password terlihat/tidak terlihat saat login/register
+// app.js
 document.addEventListener('DOMContentLoaded', function Eye() {
     const passwordInput = document.getElementById('password');
     const passwordConfirmationInput = document.getElementById('password_confirmation');
@@ -54,26 +55,33 @@ document.addEventListener('DOMContentLoaded', function Eye() {
     const eyeOpenConf = document.getElementById('eye-open-conf');
     const eyeClosedConf = document.getElementById('eye-closed-conf');
 
-    eyeOpen.addEventListener('click', function () {
-        passwordInput.type = 'text';
-        eyeOpen.classList.add('hidden');
-        eyeClosed.classList.remove('hidden');
-    });
-    eyeOpenConf.addEventListener('click', function () {
-        passwordConfirmationInput.type = 'text';
-        eyeOpenConf.classList.add('hidden');
-        eyeClosedConf.classList.remove('hidden');
-    });
-    eyeClosed.addEventListener('click', function () {
-        passwordInput.type = 'password';
-        eyeOpen.classList.remove('hidden');
-        eyeClosed.classList.add('hidden');
-    });
-    eyeClosedConf.addEventListener('click', function () {
-        passwordConfirmationInput.type = 'password';
-        eyeOpenConf.classList.remove('hidden');
-        eyeClosedConf.classList.add('hidden');
-    });
+    if (eyeOpen && eyeClosed && passwordInput) {
+        eyeOpen.addEventListener('click', function () {
+            passwordInput.type = 'text';
+            eyeOpen.classList.add('hidden');
+            eyeClosed.classList.remove('hidden');
+        });
+
+        eyeClosed.addEventListener('click', function () {
+            passwordInput.type = 'password';
+            eyeOpen.classList.remove('hidden');
+            eyeClosed.classList.add('hidden');
+        });
+    }
+
+    if (eyeOpenConf && eyeClosedConf && passwordConfirmationInput) {
+        eyeOpenConf.addEventListener('click', function () {
+            passwordConfirmationInput.type = 'text';
+            eyeOpenConf.classList.add('hidden');
+            eyeClosedConf.classList.remove('hidden');
+        });
+
+        eyeClosedConf.addEventListener('click', function () {
+            passwordConfirmationInput.type = 'password';
+            eyeOpenConf.classList.remove('hidden');
+            eyeClosedConf.classList.add('hidden');
+        });
+    }
 });
 
 window.addEventListener("storage", function Redirect(event) {

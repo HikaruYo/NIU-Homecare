@@ -1,4 +1,4 @@
-<header class="fixed w-full top-0 z-10 bg-white">
+<header class="fixed w-full top-0 z-90 bg-white">
     <div class="flex w-full justify-between px-28 py-4 shadow-sm">
         {{-- LOGO --}}
         <a href="/">
