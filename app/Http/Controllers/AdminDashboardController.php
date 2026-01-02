@@ -41,14 +41,24 @@ class AdminDashboardController extends Controller
         return view('admin.dashboard.layanan', $data);
     }
 
-    public function booking()
+    public function booking(Request $request)
     {
-        $data = array_merge($this->userData(), ['currentTab' => 'booking']);
-        $bookings = Booking::with(['user', 'bookingLayanans.layanan', 'bookingSlots.slotJadwal'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10); // Pagination untuk merapikan data dalam jumlah banyak
+        $status = $request->query('filter');
 
-        return view('admin.dashboard.booking', compact('bookings'), $data);
+        $query = Booking::with(['user', 'bookingLayanans.layanan', 'bookingSlots.slotJadwal'])
+            ->orderBy('tanggal_booking', 'desc');
+
+        if ($status && in_array($status, ['menunggu', 'diterima', 'ditolak'])) {
+            $query->where('status', $status);
+        }
+
+        $bookings = $query->paginate(10)->withQueryString();
+
+        return view('admin.dashboard.booking', array_merge($this->userData(), [
+            'bookings'      => $bookings,
+            'currentTab'    => 'booking',
+            'currentStatus' => $status
+        ]));
     }
 
     public function updateStatus(Request $request, $id)
