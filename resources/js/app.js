@@ -200,7 +200,31 @@ document.addEventListener('DOMContentLoaded', function DropdownFilter() {
         });
     }
 });
-// TODO: buat filter untuk halaman dashboard
+
+// Dropdown Sort
+document.addEventListener('DOMContentLoaded', function DropdownSort() {
+    const sortBtn = document.getElementById('sortDropdownBtn');
+    const sortMenu = document.getElementById('sortDropdownMenu');
+    const sortArrow = document.getElementById('sortDropdownArrow');
+
+    if (sortBtn && sortMenu) {
+        sortBtn.addEventListener('click', function (event) {
+            event.stopPropagation();
+            sortMenu.classList.toggle('hidden');
+            sortArrow.classList.toggle('rotate-180');
+        });
+
+        // Sembunyikan dropdown saat klik di luar area dropdown
+        window.addEventListener('click', function (event) {
+            if (!sortMenu.classList.contains('hidden')) {
+                if (!sortMenu.contains(event.target) && event.target !== sortBtn) {
+                    sortMenu.classList.add('hidden');
+                    sortArrow.classList.remove('rotate-180');
+                }
+            }
+        });
+    }
+});
 
 
 // Memunculkan/menghilangkan status alert

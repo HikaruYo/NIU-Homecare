@@ -32,13 +32,32 @@ class AdminDashboardController extends Controller
         return view('admin.dashboard', $data);
     }
 
-    public function layanan()
+    public function layanan(Request $request)
     {
-        $data = array_merge($this->userData(), [
+        $sort = $request->query('sort');
+        $query = \App\Models\Layanan::query();
+
+        switch ($sort) {
+            case 'harga':
+                $query->orderBy('nominal', 'asc');
+                break;
+            case 'durasi':
+                $query->orderBy('durasi', 'asc');
+                break;
+            case 'ditambahkan':
+            default:
+                $query->orderBy('created_at', 'desc');
+                $sort = 'ditambahkan'; // Default label
+                break;
+        }
+
+        $layanan = $query->get();
+
+        return view('admin.dashboard.layanan', array_merge($this->userData(), [
             'currentTab' => 'layanan',
-            'layanan' => \App\Models\Layanan::orderBy('created_at', 'desc')->get()
-        ]);
-        return view('admin.dashboard.layanan', $data);
+            'layanan' => $layanan,
+            'currentSort' => $sort
+        ]));
     }
 
     public function booking(Request $request)
@@ -87,7 +106,7 @@ class AdminDashboardController extends Controller
             'status' => $newStatus
         ]);
 
-        return back()->with('success', "Booking berhasil {$newStatus}.");
+        return back()->with('success', "Booking telah {$newStatus}.");
     }
 
     public function laporan()

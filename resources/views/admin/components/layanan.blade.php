@@ -16,30 +16,24 @@
         {{-- TODO: buat filter --}}
         {{-- Dropdown Container --}}
         <div class="relative">
-            {{-- Trigger --}}
+            {{-- Tombol Urutkan --}}
             <button
-                id="filterDropdownBtn"
+                id="sortDropdownBtn"
                 type="button"
-                class="flex items-center cursor-pointer text-gray-800 focus:outline-none"
+                class="flex items-center cursor-pointer text-gray-800 focus:outline-none font-medium w-full justify-between"
             >
-                Urutkan berdasarkan
-                <svg class="w-6 h-6 ml-1 transition-transform duration-300" id="filterDropdownArrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m12 15l-4-4h8l-4 4"/></svg>
+                <p>Urutkan Berdasarkan : <span class="ml-1  capitalize">{{ $currentSort ?? 'ditambahkan' }}</span></p>
+                <svg class="w-6 h-6 ml-1 transition-transform duration-300" id="sortDropdownArrow"
+                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="m12 15l-4-4h8l-4 4"/>
+                </svg>
             </button>
 
             {{-- Dropdown Menu --}}
-            <div
-                id="filterDropdownMenu"
-                class="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-xl z-50 py-2 hidden border border-gray-200"
-            >
-                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Harga
-                </button>
-                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Durasi
-                </button>
-                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Ditambahkan
-                </button>
+            <div id="sortDropdownMenu" class="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-xl z-50 py-2 border border-gray-200 hidden">
+                <a href="{{ route('admin.dashboard.layanan') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ditambahkan</a>
+                <a href="{{ route('admin.dashboard.layanan', ['sort' => 'harga']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Harga</a>
+                <a href="{{ route('admin.dashboard.layanan', ['sort' => 'durasi']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Durasi</a>
             </div>
         </div>
 

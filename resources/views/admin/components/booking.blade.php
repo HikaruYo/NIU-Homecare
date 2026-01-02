@@ -7,6 +7,13 @@
             <span class="block sm:inline">{{ session('status') }}</span>
         </div>
     @endif
+    @if (session('success'))
+        <div id="status-alert"
+             class="bg-red-200 border border-gray-400 text-black px-4 py-3 rounded-lg right-3 -top-2 absolute mb-4 transition-opacity duration-1000 ease-out"
+             role="alert">
+            <span class="block sm:inline">{{ session('success') }}</span>
+        </div>
+    @endif
 
     <div class="mx-6 py-2.5 text-4xl font-semibold border-b-2 border-gray-200">
         Daftar Pesanan Masuk
