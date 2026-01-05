@@ -249,6 +249,27 @@ document.addEventListener('DOMContentLoaded', function StatusAlert() {
     }
 });
 
+
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('carousel-container');
+    const nextBtn = document.querySelector('[data-carousel-next]');
+    const prevBtn = document.querySelector('[data-carousel-prev]');
+
+    if (container && nextBtn && prevBtn) {
+        // Jarak scroll (pixel)
+        const scrollAmount = 300;
+
+        nextBtn.addEventListener('click', () => {
+            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+    }
+});
+
+
 // Logic untuk booking
 document.addEventListener("DOMContentLoaded", () => {
     const wrapper = document.getElementById("layanan-wrapper");
