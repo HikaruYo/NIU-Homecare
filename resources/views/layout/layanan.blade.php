@@ -10,6 +10,7 @@
     </h1>
 
     <div class="overflow-x-auto overscroll-none no-scrollbar">
+        {{-- TODO: Add arrow button to slide --}}
         @include('components.card-layanan', ['layanans' => $layanans])
     </div>
 

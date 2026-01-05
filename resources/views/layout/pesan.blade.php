@@ -16,18 +16,22 @@
     <div class="flex w-full justify-between relative">
         <form action="{{ route('booking.store') }}" method="POST" class="flex flex-col w-full" id="bookingForm">
             @csrf
-            {{-- Input hidden --}}
+            {{-- Input Tanggal dan Waktu Booking --}}
             <input type="hidden" name="start_time" id="start_time">
             <input type="hidden" name="end_time" id="end_time">
             <input type="hidden" name="tanggal_booking" value="{{ $tanggal }}">
 
             <div class="flex">
-                @include('components.jadwal')
                 @include('components.pilih-layanan')
+                @include('components.jadwal')
             </div>
 
             {{-- Tombol Trigger Modal Konfirmasi Pembayaran --}}
-            <div class="w-full flex h-fit items-center gap-5">
+            <div class="w-full flex h-fit items-center">
+                <div class="mt-8 w-1/2 text-xl font-semibold">
+                    Total: <span id="total-harga">Rp 0</span>
+                </div>
+
                 <div class="mt-8 w-1/2">
                     @auth
                         <button
@@ -47,10 +51,6 @@
                             Login untuk Memesan
                         </a>
                     @endguest
-                </div>
-
-                <div class="mt-8 text-xl font-semibold">
-                    Total: <span id="total-harga">Rp 0</span>
                 </div>
             </div>
 

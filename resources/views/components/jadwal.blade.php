@@ -19,7 +19,7 @@
             </svg>
             <p class="pl-2 font-medium">{{ $tanggalFormatted ?? (\Carbon\Carbon::parse($tanggal ?? now())->format('d F Y')) }}</p>
 
-            {{-- Ikon Arrow yang membuka Kalender --}}
+            {{-- Ikon Arrow --}}
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                 <path fill="currentColor" d="m18 9l-6-6l-6 6zm0 6l-6 6l-6-6z" />
             </svg>
@@ -49,7 +49,7 @@
 
     <div id="selected-slots-container"></div>
 
-    {{-- Booking --}}
+    {{-- Perkiraan Waktu Mulai dan Selesai --}}
     <div class="flex mt-4 gap-4 items-center">
         <div class="border-b-[2px] border-b-mainGray w-1/6">
             <p>Mulai</p>

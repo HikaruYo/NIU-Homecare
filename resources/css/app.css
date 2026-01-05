@@ -68,3 +68,11 @@
 .animate-calendar .calendar-line-2 {
     animation: drawLine2 0.2s 1.3s forwards;
 }
+
+.flatpickr-calendar {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 999;
+}

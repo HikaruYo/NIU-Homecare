@@ -8,12 +8,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset("LogoNIU.png") }}">
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
-    <style>
-        body { font-family: 'Poppins', sans-serif; }
-        .bg-mint-gradient {
-            background: linear-gradient(135deg, #67BF6E 0%, #73C479 100%);
-        }
-    </style>
 </head>
 <body class="bg-gray-50 antialiased">
 
@@ -123,7 +117,7 @@
                 <div class="pt-4">
                     <button
                         type="submit"
-                        class="w-full py-3 px-4 bg-mint-gradient text-white font-semibold rounded-xl shadow-lg hover:shadow-green-200 transition-all duration-300 active:scale-95 cursor-pointer"
+                        class="w-full py-3 px-4 bg-gradient-to-br from-mainColor to-secondaryColor text-white font-semibold rounded-xl shadow-lg hover:shadow-green-200 transition-all duration-300 active:scale-95 cursor-pointer"
                     >
                         Buat Akun Sekarang
                     </button>

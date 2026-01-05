@@ -8,17 +8,11 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset("LogoNIU.png") }}">
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
-    <style>
-        body { font-family: 'Poppins', sans-serif; }
-        .bg-mint-gradient {
-            background: linear-gradient(135deg, #67BF6E 0%, #73C479 100%);
-        }
-    </style>
 </head>
 <body class="bg-gray-50 antialiased">
 
 @if (session('successRegister'))
-    <div id="popup" class="fixed top-20 right-4 bg-green-500 text-white px-6 py-3 rounded-xl shadow-2xl z-50 animate-bounce">
+    <div id="popup" class="fixed top-20 right-4 bg-green-500 text-white px-6 py-3 rounded-xl shadow-2xl z-50">
         {{ session('successRegister') }}
     </div>
 @endif
@@ -96,14 +90,14 @@
                 {{-- Button Login --}}
                 <button
                     type="submit"
-                    class="w-full py-3 px-4 bg-mint-gradient text-white font-semibold rounded-xl shadow-lg hover:shadow-green-200 transition-all duration-300 active:scale-95 cursor-pointer"
+                    class="w-full py-3 px-4 bg-gradient-to-br from-mainColor to-secondaryColor text-white font-semibold rounded-xl shadow-lg hover:shadow-green-200 transition-all duration-300 active:scale-95 cursor-pointer"
                 >
                     Masuk Sekarang
                 </button>
 
                 <p class="text-center text-sm text-gray-600">
                     Belum punya akun?
-                    <a href="/register" class="font-bold text-mainColor hover:text-secondaryColor transition-colors">Daftar Gratis</a>
+                    <a href="/register" class="font-bold text-mainColor hover:text-secondaryColor transition-colors">Daftar Sekarang</a>
                 </p>
 
                 <div class="relative py-4">

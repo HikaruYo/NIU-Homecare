@@ -1,4 +1,4 @@
-<div class="w-1/2 pl-5">
+<div class="w-1/2 pr-5">
     {{-- Header --}}
     <div class="flex w-full items-center text-lg">
         <p class="">Pilih Jenis Layanan</p>
@@ -66,8 +66,4 @@
     <button id="add-layanan" type="button" class="mt-3 bg-secondaryColor hover:shadow-md text-white px-3 py-2 rounded cursor-pointer">
         + Tambah Layanan
     </button>
-
-{{--    <div class="mt-2 text-xl font-semibold">--}}
-{{--        Total: <span id="total-harga">Rp 0</span>--}}
-{{--    </div>--}}
 </div>
