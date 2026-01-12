@@ -46,16 +46,16 @@
         </div>
     </div>
 
-    <div class="bg-white shadow-md rounded mx-6 overflow-x-auto">
-        <table class="min-w-full w-full table-auto">
+    <div class="bg-white shadow-md rounded mx-6 overflow-x-auto overscroll-none">
+        <table class="min-w-full w-full table-fixed">
             <thead>
                 <tr class="bg-gray-200 leading-normal">
-                    <th class="py-3 pl-6 text-left">No</th>
-                    <th class="py-3 pl-6 text-left">Pelanggan</th>
-                    <th class="py-3 pl-6 text-left">Tanggal dan Jam</th>
-                    <th class="py-3 pl-6 text-left">Layanan dan Total Harga</th>
-                    <th class="py-3 pl-6 text-center">Status</th>
-                    <th class="py-3 pl-6 text-center">Aksi</th>
+                    <th class="py-3 pl-6 text-left w-[5%]">No</th>
+                    <th class="py-3 pl-6 text-left w-[15%]">Pelanggan</th>
+                    <th class="py-3 pl-6 text-left w-[20%]">Tanggal dan Jam</th>
+                    <th class="py-3 pl-6 text-left w-[35%]">Layanan dan Total Harga</th>
+                    <th class="py-3 pl-6 text-center w-[10%]">Status</th>
+                    <th class="py-3 pl-6 text-center w-[15%]">Aksi</th>
                 </tr>
             </thead>
             <tbody class="text-gray-600 font-light">

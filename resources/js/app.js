@@ -270,6 +270,63 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// Search Layanan untuk Admin
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('search');
+    const tableBody = document.getElementById('layanan-table-body');
+
+    if (searchInput && tableBody) {
+        let timeout = null;
+
+        searchInput.addEventListener('keyup', function () {
+            clearTimeout(timeout);
+            let query = this.value;
+
+            // Debounce: tunggu 300ms setelah user berhenti mengetik
+            timeout = setTimeout(() => {
+                fetch(`/admin/dashboard/layanan/search?q=${query}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        tableBody.innerHTML = ''; // Kosongkan tabel saat ini
+
+                        if (data.length === 0) {
+                            tableBody.innerHTML = `<tr><td colspan="5" class="p-3 text-center">Data tidak ditemukan</td></tr>`;
+                            return;
+                        }
+
+                        data.forEach(item => {
+                            const id = item.layanan_id;
+                            const nominal = new Intl.NumberFormat('id-ID').format(item.nominal);
+
+                            tableBody.innerHTML += `
+                                <tr class="border-b border-gray-300 text-gray-600">
+                                    <td class="p-3">${item.nama_layanan}</td>
+                                    <td class="p-3">Rp ${nominal}</td>
+                                    <td class="p-3">${item.deskripsi || '-'}</td>
+                                    <td class="p-3">${item.durasi} menit</td>
+                                    <td class="p-3 flex gap-2">
+                                        <a href="/admin/dashboard/layanan/${id}/edit" class="px-3 py-1 bg-mainGray text-white rounded">Edit</a>
+                                        <form method="POST" action="/admin/dashboard/layanan/${id}">
+                                            <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button class="px-3 py-1 bg-red-600 text-white rounded">Hapus</button>
+                                        </form>
+                                    </td>
+                                </tr>`;
+                        });
+                    })
+                    .catch(error => console.error('Error saat search:', error));
+            }, 200);
+        });
+    }
+});
+
+
 // Logic untuk booking
 document.addEventListener("DOMContentLoaded", () => {
     const wrapper = document.getElementById("layanan-wrapper");

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminLaporanController;
 use App\Http\Controllers\AdminLayananController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
@@ -48,8 +49,6 @@ Route::middleware(['admin'])->group(function () {
     })->name('dashboard');
 
     Route::get('admin/dashboard/layanan', [AdminDashboardController::class, 'layanan'])->name('admin.dashboard.layanan');
-
-    // CRUD Layanan
     Route::get('admin/dashboard/layanan/tambah', [AdminLayananController::class, 'create'])
         ->name('admin.dashboard.layanan.tambah');
     Route::post('admin/dashboard/layanan/tambah', [AdminLayananController::class, 'store'])
@@ -60,11 +59,13 @@ Route::middleware(['admin'])->group(function () {
         ->name('admin.dashboard.layanan.update');
     Route::delete('admin/dashboard/layanan/{id}', [AdminLayananController::class, 'destroy'])
         ->name('admin.dashboard.layanan.destroy');
+    Route::get('admin/dashboard/layanan/search', [AdminLayananController::class, 'search'])
+        ->name('admin.dashboard.layanan.search');
 
     Route::get('admin/dashboard/booking', [AdminDashboardController::class, 'booking'])
         ->name('admin.dashboard.booking');
     Route::put('admin/dashboard/booking/{id}', [AdminDashboardController::class, 'updateStatus'])
         ->name('admin.booking.update');
 
-    Route::get('admin/dashboard/laporan', [AdminDashboardController::class, 'laporan'])->name('admin.dashboard.laporan');
+    Route::get('admin/dashboard/laporan', [AdminLaporanController::class, 'index'])->name('admin.dashboard.laporan');
 });

@@ -105,7 +105,22 @@
                     </div>
                 </div>
             @else
-                <a href="/login" class="hover:underline">
+                <a href="/login"
+                   class="relative
+                      after:bg-mainColor
+                      after:absolute
+                      after:h-[2px]
+                      after:w-full
+                      after:bottom-0
+                      after:left-0
+                      after:scale-x-0
+                      after:origin-right
+                      hover:after:scale-x-100
+                      hover:after:origin-left
+                      after:transition-transform
+                      after:duration-300
+                      cursor-pointer"
+                >
                     Login
                 </a>
             @endif

@@ -100,4 +100,15 @@ class AdminLayananController extends Controller
             ->route('admin.dashboard.layanan')
             ->with('status', 'Layanan berhasil dihapus!');
     }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->get('q');
+
+        $layanans = Layanan::where('nama_layanan', 'LIKE', "%{$keyword}%")
+            ->orWhere('deskripsi', 'LIKE', "%{$keyword}%")
+            ->get();
+
+        return response()->json($layanans);
+    }
 }
