@@ -44,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['admin'])->group(function () {
-    Route::get('/', function () {
+    Route::get('admin/dashboard', function () {
         return redirect()->route('admin.dashboard.laporan');
     })->name('dashboard');
 

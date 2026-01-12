@@ -16,7 +16,7 @@ class HomeController extends Controller
 //        Handle untuk mengecek jika admin yang login maka langsung diarahkan ke dashboard admin
 //        tanpa memiliki izin untuk melihat halaman utama
         if (Auth::check() && Auth::user()->role === 'admin') {
-            return redirect()->route('admin.dashboard.layanan');
+            return redirect()->route('admin.dashboard.laporan');
         }
 
         $layanans = Layanan::all();
