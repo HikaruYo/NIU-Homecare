@@ -31,8 +31,18 @@ class DashboardController extends Controller
 
     public function profil()
     {
-        return view('dashboard.profil', $this->userData())
-            ->with('currentTab', 'profil');
+        // Mengambil booking yang akan datang
+        $upcomingBookings = Booking::where('user_id', auth()->id())
+            ->where('tanggal_booking', '>=', now()->toDateString())
+            ->whereIn('status', ['menunggu', 'diterima'])
+            ->with('bookingLayanans.layanan')
+            ->orderBy('tanggal_booking', 'asc')
+            ->get();
+
+        return view('dashboard.profil', array_merge($this->userData(), [
+            'currentTab' => 'profil',
+            'upcomingBookings' => $upcomingBookings
+        ]));
     }
 
     public function histori(Request $request)

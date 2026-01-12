@@ -681,3 +681,37 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+// Modal edit profil
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('editProfileModal');
+    const modalContent = document.getElementById('modalContent');
+    const openBtn = document.getElementById('openEditModal');
+    const closeBtn = document.getElementById('closeEditModal');
+    const cancelBtn = document.getElementById('btnCancel');
+
+    function toggleModal() {
+        if (modal.classList.contains('hidden')) {
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        } else {
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    }
+
+    openBtn.addEventListener('click', toggleModal);
+    closeBtn.addEventListener('click', toggleModal);
+    cancelBtn.addEventListener('click', toggleModal);
+
+    // Tutup modal jika klik di luar area modal content
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) toggleModal();
+    });
+});
