@@ -23,7 +23,7 @@ Route::get('/logout', function() {
 // Redirect setelah login berdasarkan role
 Route::get('/dashboard', function () {
     if (auth()->user()->role === 'admin') {
-        return redirect()->route('admin.dashboard.layanan');
+        return redirect()->route('admin.dashboard.laporan');
     } else {
         return redirect()->route('dashboard.profil');
     }
@@ -44,8 +44,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['admin'])->group(function () {
-    Route::get('admin/dashboard', function () {
-        return redirect()->route('admin.dashboard.layanan');
+    Route::get('/', function () {
+        return redirect()->route('admin.dashboard.laporan');
     })->name('dashboard');
 
     Route::get('admin/dashboard/layanan', [AdminDashboardController::class, 'layanan'])->name('admin.dashboard.layanan');
@@ -67,5 +67,5 @@ Route::middleware(['admin'])->group(function () {
     Route::put('admin/dashboard/booking/{id}', [AdminDashboardController::class, 'updateStatus'])
         ->name('admin.booking.update');
 
-    Route::get('admin/dashboard/laporan', [AdminLaporanController::class, 'index'])->name('admin.dashboard.laporan');
+    Route::get('admin/dashboard/laporan', [AdminDashboardController::class, 'laporan'])->name('admin.dashboard.laporan');
 });
