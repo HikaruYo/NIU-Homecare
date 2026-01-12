@@ -16,7 +16,7 @@
         <!-- Total Booking Bulan Ini -->
         <div class="bg-white p-4 rounded-2xl shadow">
             <p class="text-gray-400 text-sm">Booking Bulan Ini</p>
-            <h2 class="text-3xl font-bold text-mainColor">
+            <h2 class="text-2xl font-bold text-mainColor">
                 {{ $totalBookingBulanIni }}
             </h2>
         </div>
@@ -24,7 +24,7 @@
         <!-- Diterima -->
         <div class="bg-white p-4 rounded-2xl shadow">
             <p class="text-gray-400 text-sm">Diterima</p>
-            <h2 class="text-3xl font-bold text-green-600">
+            <h2 class="text-2xl font-bold text-green-600">
                 {{ $bookingDiterima }}
             </h2>
         </div>
@@ -32,7 +32,7 @@
         <!-- Menunggu -->
         <div class="bg-white p-4 rounded-2xl shadow">
             <p class="text-gray-400 text-sm">Menunggu</p>
-            <h2 class="text-3xl font-bold text-yellow-500">
+            <h2 class="text-2xl font-bold text-yellow-500">
                 {{ $bookingMenunggu }}
             </h2>
         </div>
@@ -40,7 +40,7 @@
         <!-- Ditolak -->
         <div class="bg-white p-4 rounded-2xl shadow">
             <p class="text-gray-400 text-sm">Ditolak</p>
-            <h2 class="text-3xl font-bold text-red-500">
+            <h2 class="text-2xl font-bold text-red-500">
                 {{ $bookingDitolak }}
             </h2>
         </div>
@@ -49,7 +49,7 @@
     <div class="mx-6 flex gap-4">
         <div class="bg-white w-1/2 h-fit p-4 rounded-2xl shadow mb-1">
             <p class="text-gray-400 text-sm">Total Pendapatan</p>
-            <h2 class="text-4xl font-bold text-mainColor">
+            <h2 class="text-2xl font-bold text-mainColor">
                 Rp {{ number_format($pendapatan, 0, ',', '.') }}
             </h2>
             <p class="text-gray-500 mt-2">

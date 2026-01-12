@@ -38,7 +38,6 @@ class DashboardController extends Controller
     public function histori(Request $request)
     {
         // Ambil booking milik user, urutkan dari yang terbaru
-        // TODO: buat filter
         $status = $request->query('status');
 
         $query = Booking::where('user_id', Auth::id())

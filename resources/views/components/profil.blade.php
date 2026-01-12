@@ -1,4 +1,4 @@
-<div class="flex flex-col w-full h-full gap-4 bg-mainGray shadow-lg rounded-lg">
+<div class="flex flex-col w-full h-full gap-4 pb-4 bg-mainGray shadow-lg rounded-lg">
     {{-- Notification --}}
     @if (session('status'))
         <div id="status-alert"
@@ -12,53 +12,66 @@
     @endphp
 
     <div class="mx-6 py-2.5 text-4xl font-semibold border-b-2 border-gray-200">
-        Profil {{ $full }}
+        Profil <span class="text-mainColor">{{ $full }}</span>
     </div>
 
-    <div class="px-6 text-2xl font-semibold">
-        Informasi Akun
+    <div class="flex flex-col bg-white mx-6 p-4 shadow rounded-md gap-2">
+        <div class="text-2xl font-semibold">
+            Informasi Akun
+        </div>
+
+        {{-- User Information --}}
+        <div class="grid grid-cols-2 gap-2">
+            <div class="flex flex-col">
+                <p class="text-gray-600 text-sm">Nama Pengguna</p>
+                <p class="">{{ $full }}</p>
+            </div>
+
+            <div class="flex flex-col">
+                <p class="text-gray-600 text-sm">Email</p>
+                <p class=" text-left">{{ $email }}</p>
+            </div>
+
+            <div class="flex flex-col">
+                <p class="text-gray-600 text-sm">Nomor Handphone</p>
+                @if(empty($no_hp))
+                    <p class=" text-left text-gray-500 italic">: Belum terisi</p>
+                @else
+                    <p class=" text-left">{{ $no_hp }}</p>
+                @endif
+            </div>
+
+            <div class="flex flex-col">
+                <p class="text-gray-600 text-sm">Alamat</p>
+                @if(empty($alamat))
+                    <p class=" text-left text-gray-500 italic">Belum terisi</p>
+                @else
+                    <p class=" text-left">{{ $alamat }}</p>
+                @endif
+            </div>
+        </div>
+
+        {{-- Edit Profile --}}
+        @if (!$isEditMode)
+            <div class="">
+                <a href="{{ route('profile.edit') }}"
+                   class="inline-block px-4 py-2 bg-mainColor text-white font-semibold rounded-md shadow hover:shadow-md transition duration-150">
+                    Edit Profil
+                </a>
+            </div>
+        @endif
     </div>
 
-    {{-- User Information --}}
-    <div class="flex flex-col gap-2">
-        <div class="flex px-6 justify-between">
-            <p class="w-full">Nama Pengguna</p>
-            <p class="w-full text-left">: {{ $full }}</p>
+    <div class="flex flex-1 flex-col h-min mx-6 gap-4 bg-white p-4 rounded-md shadow">
+        <!-- Total Booking Bulan Ini -->
+        <div class="text-gray-400 border-b pb-2">
+            <p>Anda memiliki 3 booking mendatang</p>
         </div>
 
-        <div class="flex px-6 justify-between">
-            <p class="w-full">Email</p>
-            <p class="w-full text-left">: {{ $email }}</p>
-        </div>
-
-        <div class="flex px-6 justify-between">
-            <p class="w-full">Nomor Handphone</p>
-            @if(empty($no_hp))
-                <p class="w-full text-left text-gray-500 italic">: Belum terisi</p>
-            @else
-                <p class="w-full text-left">: {{ $no_hp }}</p>
-            @endif
-        </div>
-
-        <div class="flex px-6 justify-between">
-            <p class="w-full">Alamat</p>
-            @if(empty($alamat))
-                <p class="w-full text-left text-gray-500 italic">: Belum terisi</p>
-            @else
-                <p class="w-full text-left">: {{ $alamat }}</p>
-            @endif
+        <div class="flex items-center justify-center">
+            <p>Anda belum memiliki booking, pesan sekarang</p>
         </div>
     </div>
-
-    {{-- Edit Profile --}}
-    @if (!$isEditMode)
-        <div class="ml-5">
-            <a href="{{ route('profile.edit') }}"
-               class="inline-block px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition duration-150">
-                Edit Profil
-            </a>
-        </div>
-    @endif
 
     {{-- TODO: buat laporan singkat sudah berapa kali memesan layanan, berapa yang berhasil, ditolak, atau menunggu --}}
     {{-- TODO: bikin grid-3 menyamping, yang akan muncul jika form edit profil kosong, dan akan hilang jika user edit profil --}}
