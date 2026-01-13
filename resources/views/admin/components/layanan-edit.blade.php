@@ -35,11 +35,6 @@
             </div>
 
             <div class="">
-                <label>Deskripsi</label>
-                <textarea name="deskripsi" class="w-full p-2 rounded bg-white">{{ old('deskripsi') }}</textarea>
-            </div>
-
-            <div class="">
                 <label>Durasi (30 menit)</label>
                 <input type="number" name="durasi" class="w-full p-2 rounded bg-white"
                        value="{{ old('durasi', $layanan->durasi) }}">

@@ -2,6 +2,8 @@
 
 @section('content')
     <div class="flex flex-col w-full h-full gap-4 bg-mainGray shadow-lg rounded-lg">
+        {{-- TODO: update UI --}}
+        {{-- TODO: buat flexible tarif, jika tarif_flexible true maka ada tambahan di depan display tarif yaitu mulai dari ...   --}}
         <div class="mx-6 py-2.5 text-4xl font-semibold border-b-2 border-gray-200">
             Tambah Layanan
         </div>
@@ -33,11 +35,7 @@
             </div>
 
             <div>
-                <label>Deskripsi</label>
-                <textarea name="deskripsi" class="w-full p-2 rounded bg-white">{{ old('deskripsi') }}</textarea>
-            </div>
-
-            <div>
+                {{-- TODO: buat dropdown template durasi; 30,60,90,120,150 menit --}}
                 <label>Durasi (30 menit)</label>
                 <input type="number" name="durasi" value="{{ old('durasi') }}" class="w-full p-2 rounded bg-white">
             </div>

@@ -67,7 +67,7 @@
         <div class="border-b-[2px] border-b-mainGray w-1/6">
             <p>Selesai</p>
             <div class="flex">
-                <div id="displayStart">--:--</div>
+                <div id="displayEnd">--:--</div>
             </div>
         </div>
     </div>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('layanan_id');
             $table->string('nama_layanan');
             $table->integer('nominal');
-            $table->text('deskripsi');
+            $table->string('gambar');
             $table->integer('durasi');
             $table->boolean('is_flexible_duration')->default(false);
             $table->integer('harga_per_30menit')->nullable();

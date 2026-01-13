@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
-    // TODO: buat agar slot yang dipesan bertambah 2 secara otomatis (membuat jeda selama 1 jam antara pesanan)
     // TODO: buat admin dapat men-disable slot jadwal (tutup)
     // TODO: buat agar user dapat membatalkan booking (menghapus hingga data booking yang dilakukan user)
 

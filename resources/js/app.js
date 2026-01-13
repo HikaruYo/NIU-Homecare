@@ -335,9 +335,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalField = document.getElementById("total-harga");
     const slotsContainer = document.getElementById("selected-slots-container");
     const slotItems = document.querySelectorAll(".slot-item");
+    const inputStartTime = document.getElementById('start_time');
+    const inputEndTime = document.getElementById('end_time');
 
     const rupiah = (n) => "Rp " + n.toLocaleString('id-ID');
-    const BUFFER_MINUTES = 60;
+    const BUFFER_MINUTES = 30;
 
     function updateTotal() {
         let total = 0;
@@ -367,6 +369,52 @@ document.addEventListener("DOMContentLoaded", () => {
         return totalMenit;
     }
 
+    // Menerapkan pilihan slot berdasarkan waktu mulai yang sudah ada
+    function applySlotSelection(startTime) {
+        if (!startTime) return;
+
+        const totalDurasi = getTotalDuration();
+        if (totalDurasi <= 0) return;
+
+        const [h, m] = startTime.split(":").map(Number);
+        const startDate = new Date(2000, 1, 1, h, m);
+        const serviceEndDate = new Date(startDate.getTime() + totalDurasi * 60000);
+        const bookingEndDate = new Date(startDate.getTime() + (totalDurasi + BUFFER_MINUTES) * 60000);
+
+        const endServiceStr = serviceEndDate.toTimeString().slice(0,5);
+        const endBookingStr = bookingEndDate.toTimeString().slice(0,5);
+
+        // Validasi ketersediaan jika durasi bertambah
+        if (!cekSlotAvailable(startTime, endBookingStr)) {
+            alert(`Slot waktu tidak cukup untuk total durasi baru (memerlukan jeda ${BUFFER_MINUTES} mnt). Slot direset.`);
+            resetSlotSelection();
+            return;
+        }
+
+        // Update UI
+        if(inputEndTime) inputEndTime.value = endServiceStr;
+        document.getElementById("displayStart").textContent = startTime;
+        document.getElementById("displayEnd").textContent = endServiceStr;
+
+        // Update Hidden Inputs untuk Database
+        if (slotsContainer) {
+            slotsContainer.innerHTML = "";
+            let loopDate = new Date(startDate);
+            while (loopDate < bookingEndDate) {
+                const timeStr = loopDate.toTimeString().slice(0, 5);
+                const slotEl = document.querySelector(`.slot-item[data-time='${timeStr}']`);
+                if (slotEl) {
+                    const input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "slot_jadwal_id[]";
+                    input.value = slotEl.dataset.id;
+                    slotsContainer.appendChild(input);
+                }
+                loopDate = new Date(loopDate.getTime() + 30 * 60000);
+            }
+        }
+    }
+
     // Logic untuk memilih layanan (dropdown)
     function attachEventToRow(row) {
         const select = row.querySelector(".layanan-select");
@@ -381,49 +429,17 @@ document.addEventListener("DOMContentLoaded", () => {
             removeBtn.addEventListener("click", () => {
                 row.remove();
                 updateTotal();
-                // Reset slot selection jika layanan berubah
-                resetSlotSelection();
+                // Otomatis update saat baris dihapus
+                if (inputStartTime && inputStartTime.value) applySlotSelection(inputStartTime.value);
             });
         }
 
         // Logic untuk mengganti layanan yang ingin dipesan
         select.addEventListener("change", () => {
-            const currentVal = select.value;
             const opt = select.selectedOptions[0];
-
-            // Cek apakah layanan ini sudah dipilih di baris lain
-            let isDuplicate = false;
-            const allSelects = document.querySelectorAll(".layanan-select");
-            allSelects.forEach(otherSelect => {
-                // Pastikan bukan elemen yang sama dan value-nya sama
-                if (otherSelect !== select && otherSelect.value === currentVal && currentVal !== "") {
-                    isDuplicate = true;
-                }
-            });
-
-            if (isDuplicate) {
-                alert("Layanan ini sudah dipilih sebelumnya. Silakan pilih layanan lain.");
-                select.value = ""; // Reset pilihan
-                // Reset tampilan harga/durasi ke 0
-                durasiSelect.classList.add("hidden");
-                durasiText.classList.add("hidden");
-                durasiInput.value = 0;
-                hargaField.textContent = "Rp 0";
-                hargaField.dataset.value = 0;
-                updateTotal();
-                resetSlotSelection();
-                return;
-            }
-
-            // Jika user pilih "Pilih Layanan" (kosong) / belum memilih
             if (!opt || !opt.value) {
-                durasiSelect.classList.add("hidden");
-                durasiText.classList.add("hidden");
                 durasiInput.value = 0;
-                hargaField.textContent = "Rp 0";
-                hargaField.dataset.value = 0;
                 updateTotal();
-                resetSlotSelection();
                 return;
             }
 
@@ -437,7 +453,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 durasiSelect.classList.add("hidden");
                 durasiText.classList.remove("hidden");
                 durasiText.textContent = baseDurasi + " menit";
-
                 durasiInput.value = baseDurasi; // Set hidden input
                 hargaField.textContent = rupiah(baseHarga);
                 hargaField.dataset.value = baseHarga;
@@ -457,23 +472,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Logic saat durasi fleksibel berubah
                 durasiSelect.onchange = () => {
-                    const durasi = parseInt(durasiSelect.value);
-                    durasiInput.value = durasi; // Set hidden input
-
-                    const hargaAkhir = (durasi / 30) * harga30;
+                    durasiInput.value = durasiSelect.value;
+                    const hargaAkhir = (durasiSelect.value / 30) * harga30;
                     hargaField.textContent = rupiah(hargaAkhir);
                     hargaField.dataset.value = hargaAkhir;
                     updateTotal();
-                    resetSlotSelection(); // Reset slot karena durasi berubah
+                    // Otomatis update jam saat durasi fleksibel berubah
+                    if (inputStartTime.value) applySlotSelection(inputStartTime.value);
                 };
 
                 // Default durasi fleksibel adalah 30 menit
-                durasiSelect.value = 30;
+                durasiSelect.value = durasiInput.value > 0 ? durasiInput.value : 30;
                 durasiSelect.dispatchEvent(new Event("change"));
             }
             updateTotal();
-            resetSlotSelection();
+            // Otomatis update jam saat layanan berubah
+            if (inputStartTime.value) applySlotSelection(inputStartTime.value);
         });
+
+        // Jika select sudah ada nilainya (autofill/old input), jalankan logicnya
+        if (select.value) {
+            select.dispatchEvent(new Event("change"));
+        }
     }
 
     // Logic untuk menambah layanan yang ingin dipesan
@@ -486,97 +506,34 @@ document.addEventListener("DOMContentLoaded", () => {
             attachEventToRow(row);
             // Masukkan ke wrapper
             wrapper.appendChild(row);
-            console.log('btn click')
+            // Otomatis update jam saat baris baru ditambah
+            if (inputStartTime && inputStartTime.value) applySlotSelection(inputStartTime.value);
         });
-
     }
 
     // Init Event untuk baris pertama
     document.querySelectorAll("#layanan-wrapper > .layanan-row").forEach(row => attachEventToRow(row));
 
-
     // Logic untuk memilih slot jadwal
     function resetSlotSelection() {
         if(slotsContainer) slotsContainer.innerHTML = "";
-        document.querySelector("#start_time").value = "";
-        document.querySelector("#end_time").value = "";
-        document.querySelector("#displayStart").textContent = "--:--";
-        if(document.querySelectorAll("#displayStart")[1]) {
-            document.querySelectorAll("#displayStart")[1].textContent = "--:--";
-        }
+        if(inputStartTime) inputStartTime.value = "";
+        if(inputEndTime) inputEndTime.value = "";
+        document.getElementById("displayStart").textContent = "--:--";
+        document.getElementById("displayEnd").textContent = "--:--";
         slotItems.forEach(s => s.classList.remove("bg-mainColor", "text-white"));
     }
 
     slotItems.forEach(item => {
         item.addEventListener("click", () => {
-            const start = item.dataset.time;
-            const totalDurasi = getTotalDuration();
-
-            // Mencegah input kosong
-            if (totalDurasi <= 0) {
-                alert("Silahkan pilih layanan dan durasinya terlebih dahulu.");
+            if (getTotalDuration() <= 0) {
+                alert("Silahkan pilih layanan terlebih dahulu.");
                 return;
             }
-
-            // Hitung waktu layanan
-            const [h, m] = start.split(":").map(Number);
-            const startDate = new Date(2000, 1, 1, h, m);
-
-            // Waktu selesai layanan (Tampilan UI)
-            const serviceEndDate = new Date(startDate.getTime() + totalDurasi * 60000);
-
-            // Waktu Selesai Booking + Buffer (Logic Database)
-            const bookingEndDate = new Date(startDate.getTime() + (totalDurasi + BUFFER_MINUTES) * 60000);
-
-            // Format String HH:mm
-            const endServiceStr = serviceEndDate.toTimeString().slice(0,5);
-            const endBookingStr = bookingEndDate.toTimeString().slice(0,5);
-
-            // Cek ketersediaan slot (termasuk buffer)
-            if (!cekSlotAvailable(start, endBookingStr)) {
-                alert(`Slot waktu tidak cukup (memerlukan jeda ${BUFFER_MINUTES} menit setelah layanan). Silakan pilih jam lain.`);
-                return;
-            }
-
-            // Update Tampilan UI
-            document.querySelector("#start_time").value = start;
-            document.querySelector("#end_time").value = endServiceStr;
-            document.querySelector("#displayStart").textContent = start;
-
-            // Fix selector duplicate ID
-            const displays = document.querySelectorAll("#displayStart");
-            if(displays.length > 1) displays[1].textContent = endServiceStr;
-
-            // Highlight Slot
+            if(inputStartTime) inputStartTime.value = item.dataset.time;
             slotItems.forEach(s => s.classList.remove("bg-mainColor", "text-white"));
             item.classList.add("bg-mainColor", "text-white");
-
-            // Memastikan input slot ada
-            if (!slotsContainer) return;
-            slotsContainer.innerHTML = "";
-
-            let loopDate = new Date(startDate);
-            const finalDate = bookingEndDate; // Loop sampai durasi + buffer
-
-            // Loop untuk membuat input slot hidden
-            while (loopDate < finalDate) {
-                const timeStr = loopDate.toTimeString().slice(0, 5); // Format HH:mm
-
-                // Cari elemen slot di UI yang cocok waktunya
-                const slotEl = document.querySelector(`.slot-item[data-time='${timeStr}']`);
-
-                if (slotEl) {
-                    const slotId = slotEl.dataset.id;
-
-                    const input = document.createElement("input");
-                    input.type = "hidden";
-                    input.name = "slot_jadwal_id[]";
-                    input.value = slotId;
-
-                    slotsContainer.appendChild(input);
-                }
-                loopDate = new Date(loopDate.getTime() + 30 * 60000);
-            }
+            applySlotSelection(item.dataset.time);
         });
     });
 
@@ -585,15 +542,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const [h, m] = end.split(":").map(Number);
         const endDate = new Date(2000, 1, 1, h, m);
         let loopDate = new Date(2000, 1, 1, ...start.split(":").map(Number));
-
         while (loopDate < endDate) {
             const timeStr = loopDate.toTimeString().slice(0, 5);
             const slot = document.querySelector(`.slot-item[data-time='${timeStr}']`);
-
-            // Jika slot tidak ada atau disabled (sudah dibooking/penuh)
-            if (!slot || slot.classList.contains("pointer-events-none")) {
-                return false;
-            }
+            if (!slot || slot.classList.contains("pointer-events-none")) return false;
             loopDate = new Date(loopDate.getTime() + 30 * 60000);
         }
         return true;

@@ -61,6 +61,7 @@
     </div>
 
     <div class="px-6 pb-6">
+        {{-- TODO: paginate --}}
         <table class="w-full bg-white shadow rounded-lg table-fixed">
             <thead class="bg-gray-200">
                 <tr>
