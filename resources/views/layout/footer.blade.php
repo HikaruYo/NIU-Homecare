@@ -1,4 +1,4 @@
-<div class="px-28 py-6 flex bg-mainColor justify-between">
+<div class="px-28 py-6 flex bg-mainColor justify-between text-white">
 
     <a href="/" class="items-start h-fit">
         <img src="{{ asset('assets/LogoNIU.png') }}" alt="Logo" class="w-20 h-10" />

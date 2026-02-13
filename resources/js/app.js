@@ -8,6 +8,78 @@ import {
 
 initTWE({ Ripple });
 
+
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+if (mobileMenuBtn) {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const line1 = document.getElementById('line1');
+    const line2 = document.getElementById('line2');
+    const line3 = document.getElementById('line3');
+    const header = document.querySelector('header');
+
+    // Fungsi untuk menutup menu mobile
+    const closeMobileMenu = () => {
+        mobileMenu.style.maxHeight = "0px";
+        line1.classList.remove('rotate-45', 'translate-x-1');
+        line2.classList.remove('opacity-0');
+        line3.classList.remove('-rotate-45', 'translate-x-1');
+    };
+
+    // Fungsi untuk membuka menu mobile
+    const openMobileMenu = () => {
+        mobileMenu.style.maxHeight = "500px";
+        line1.classList.add('rotate-45', 'translate-x-1');
+        line2.classList.add('opacity-0');
+        line3.classList.add('-rotate-45', 'translate-x-1');
+    };
+
+    if (mobileMenuBtn) {
+        // Toggle Mobile Menu saat tombol diklik
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = mobileMenu.style.maxHeight && mobileMenu.style.maxHeight !== "0px";
+            if (isOpen) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        });
+
+        // Menutup menu saat klik di luar area header
+        window.addEventListener('click', (e) => {
+            if (!header.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+    }
+
+    // Profile Dropdown (Desktop)
+    const profileBtn = document.getElementById('profileDropdownBtn');
+    const profileMenu = document.getElementById('profileDropdownMenu');
+    const arrow = document.getElementById('dropdownArrow');
+
+    if (profileBtn) {
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileMenu.classList.toggle('hidden');
+            arrow.classList.toggle('rotate-180');
+        });
+
+        // Menutup profile menu saat klik di luar
+        window.addEventListener('click', (e) => {
+            if (!profileBtn.contains(e.target)) {
+                profileMenu.classList.add('hidden');
+                arrow.classList.remove('rotate-180');
+            }
+        });
+    }
+
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+    });
+}
+
 // Tombol panah untuk auto scroll ke atas
 const upButton = document.getElementById("btn-back-to-top");
 if (upButton) {

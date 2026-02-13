@@ -43,7 +43,12 @@
             background-position: center;
         "
     >
-        @include('layout.homepage')
+        <div class="md:h-0 h-1/2">
+            test
+        </div>
+        <div class="md:h-full h-1/2">
+            @include('layout.homepage')
+        </div>
     </div>
 
     <div id="layanan" class="h-sreen bg-mainColor">
