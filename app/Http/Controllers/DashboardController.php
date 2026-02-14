@@ -52,7 +52,7 @@ class DashboardController extends Controller
 
         $query = Booking::where('user_id', Auth::id())
             ->with(['bookingLayanans.layanan'])
-            ->orderBy('tanggal_booking', 'desc');
+            ->orderBy('booking_id', 'desc');
 
         // Logika filter
         if ($status && in_array($status, ['menunggu', 'diterima', 'ditolak'])) {

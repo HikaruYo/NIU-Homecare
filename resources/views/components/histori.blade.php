@@ -56,7 +56,7 @@
 
                         <div class="flex justify-between items-start mb-4">
                             <div>
-                                <p class="text-sm text-gray-500">No. Booking: #{{ $booking->booking_id }}</p>
+{{--                                <p class="text-sm text-gray-500">No. Booking: #{{ $booking->booking_id }}</p>--}}
                                 <p class="font-semibold text-lg">
                                     {{ \Carbon\Carbon::parse($booking->tanggal_booking)->locale('id')->isoFormat('dddd, D MMMM Y') }}
                                 </p>
