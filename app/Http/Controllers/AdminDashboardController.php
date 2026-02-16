@@ -137,6 +137,7 @@ class AdminDashboardController extends Controller
         $bookingDiterima = Booking::where('status', 'diterima')->count();
         $bookingMenunggu = Booking::where('status', 'menunggu')->count();
         $bookingDitolak  = Booking::where('status', 'ditolak')->count();
+        $bookingDibatalkan  = Booking::where('status', 'dibatalkan')->count();
 
         // Pendapatan (hanya yang diterima)
         $pendapatan = BookingLayanan::join(
@@ -154,8 +155,10 @@ class AdminDashboardController extends Controller
             'bookingDiterima',
             'bookingMenunggu',
             'bookingDitolak',
+            'bookingDibatalkan',
             'pendapatan',
             'bookingBulanan'
+
         ));
     }
 }

@@ -170,10 +170,12 @@ class BookingController extends Controller
 
         } catch (\Exception $e) {
             \DB::rollBack();
-            // Debugging: Tampilkan pesan error asli jika terjadi masalah
+            // Debugging
             return back()->with('status', 'Terjadi kesalahan sistem: ' . $e->getMessage());
         }
     }
+
+    // TODO: buat fitur auto tolak booking jika hari pemesanan sudah melebihi tanggal jika booking belum diterima
 
     public function cancel($id)
     {
@@ -184,7 +186,6 @@ class BookingController extends Controller
         $bookingDate = \Carbon\Carbon::parse($booking->tanggal_booking)->startOfDay();
         $today = now()->startOfDay();
 
-        // Proteksi tambahan di sisi server (Security)
         if ($today->diffInDays($bookingDate, false) < 1) {
             return back()->with('status', 'Pembatalan gagal! Hanya bisa dilakukan maksimal H-1.');
         }

@@ -12,7 +12,7 @@
         Laporan Penghasilan
     </div>
 
-    <div class="grid grid-cols-1 mx-6 py-2 md:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 mx-6 py-2 md:grid-cols-5 gap-4">
         <!-- Total Booking Bulan Ini -->
         <div class="bg-white p-4 rounded-2xl shadow">
             <p class="text-gray-400 text-sm">Booking Bulan Ini</p>
@@ -44,7 +44,16 @@
                 {{ $bookingDitolak }}
             </h2>
         </div>
+
+        <div class="bg-white p-4 rounded-2xl shadow">
+            <p class="text-gray-400 text-sm">Dibatalkan</p>
+            <h2 class="text-2xl font-bold text-gray-600">
+                {{ $bookingDibatalkan }}
+            </h2>
+        </div>
     </div>
+
+    {{-- TODO: buat graph pendapatan --}}
 
     <div class="mx-6 flex gap-4">
         <div class="bg-white w-1/2 h-fit p-4 rounded-2xl shadow mb-1">

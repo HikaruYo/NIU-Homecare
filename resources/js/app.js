@@ -107,7 +107,6 @@ if (calendarSvg) {
 
 
 // Membuat password terlihat/tidak terlihat saat login/register
-// app.js
 document.addEventListener('DOMContentLoaded', function Eye() {
     const passwordInput = document.getElementById('password');
     const passwordConfirmationInput = document.getElementById('password_confirmation');
@@ -342,10 +341,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <tr class="border-b border-gray-300 text-gray-600">
                                     <td class="p-3">${item.nama_layanan}</td>
                                     <td class="p-3">Rp ${nominal}</td>
-                                    <td class="p-3">${item.deskripsi || '-'}</td>
                                     <td class="p-3">${item.durasi} menit</td>
                                     <td class="p-3 flex gap-2">
-                                        <a href="/admin/dashboard/layanan/${id}/edit" class="px-3 py-1 bg-mainGray text-white rounded">Edit</a>
+                                        <a href="/admin/dashboard/layanan/${id}/edit" class="px-3 py-1 bg-mainColor text-white rounded">Edit</a>
                                         <form method="POST" action="/admin/dashboard/layanan/${id}">
                                             <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
                                             <input type="hidden" name="_method" value="DELETE">

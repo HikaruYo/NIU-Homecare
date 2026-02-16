@@ -12,7 +12,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if(!Auth::check()) {
-            redirect()->route('login')->with('error', 'Silahkan Login Terlebih Dahulu');
+            return redirect()->route('login')->with('error', 'Silahkan Login Terlebih Dahulu');
         }
         $user = Auth::user();
 

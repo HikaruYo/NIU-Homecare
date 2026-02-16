@@ -29,7 +29,7 @@ class AdminLayananController extends Controller
             'nama_layanan' => 'required|string|max:100',
             'gambar' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
             'nominal' => 'required|integer|min:1000',
-            'deskripsi' => 'nullable|string|max:100',
+//            'deskripsi' => 'nullable|string|max:100',
             'durasi' => 'required|integer|min:10',
             'is_flexible_duration' => 'required|boolean',
             'harga_per_30menit' => 'nullable|integer|min:1000',
@@ -62,7 +62,7 @@ class AdminLayananController extends Controller
             'nama_layanan' => 'required|string',
             'gambar' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
             'nominal' => 'required|integer|min:1000',
-            'deskripsi' => 'nullable|string',
+//            'deskripsi' => 'nullable|string',
             'durasi' => 'nullable|integer',
             'is_flexible_duration' => 'required|boolean',
             'harga_per_30menit' => 'nullable|integer|min:1000',
@@ -106,7 +106,7 @@ class AdminLayananController extends Controller
         $keyword = $request->get('q');
 
         $layanans = Layanan::where('nama_layanan', 'LIKE', "%{$keyword}%")
-            ->orWhere('deskripsi', 'LIKE', "%{$keyword}%")
+//            ->orWhere('deskripsi', 'LIKE', "%{$keyword}%")
             ->get();
 
         return response()->json($layanans);

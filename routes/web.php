@@ -20,16 +20,16 @@ Route::get('/logout', function() {
     abort(404);
 });
 
-// Redirect setelah login berdasarkan role
-Route::get('/dashboard', function () {
-    if (auth()->user()->role === 'admin') {
-        return redirect()->route('admin.dashboard.laporan');
-    } else {
-        return redirect()->route('dashboard.profil');
-    }
-})->name('dashboard');
-
 Route::middleware(['auth'])->group(function () {
+    // Redirect setelah login berdasarkan role
+    Route::get('/dashboard', function () {
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.dashboard.laporan');
+        } else {
+            return redirect()->route('dashboard.profil');
+        }
+    })->name('dashboard');
+
     Route::get('/dashboard/profil', [DashboardController::class, 'profil'])->name('dashboard.profil');
     Route::get('/dashboard/histori', [DashboardController::class, 'histori'])->name('dashboard.histori');
 
@@ -44,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/booking/{id}/cancel', [BookingController::class, 'cancel'])->name('booking.cancel');
 });
 
-Route::middleware(['admin'])->group(function () {
+Route::middleware(['auth','admin'])->group(function () {
     Route::get('admin/dashboard', function () {
         return redirect()->route('admin.dashboard.laporan');
     })->name('dashboard');

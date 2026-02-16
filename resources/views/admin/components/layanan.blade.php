@@ -53,53 +53,51 @@
         <div>
             <button
                 onclick="window.location='{{ route('admin.dashboard.layanan.tambah') }}'"
-                class="bg-mainColor p-2 rounded-md shadow hover:shadow-md transition duration-300 cursor-pointer"
+                class="bg-mainColor text-white p-2 rounded-md shadow hover:shadow-md transition duration-300 cursor-pointer"
             >
                 Tambah Layanan
             </button>
         </div>
     </div>
 
-    <div class="px-6 pb-6">
-        {{-- TODO: paginate --}}
-        <table class="w-full bg-white shadow rounded-lg table-fixed">
-            <thead class="bg-gray-200">
-                <tr>
-                    <th class="p-3 text-left w-[20%]">Nama Layanan</th>
-                    <th class="p-3 text-left w-[15%]">Tarif</th>
-                    <th class="p-3 text-left w-[30%]">Deskripsi</th>
-                    <th class="p-3 text-left w-[15%]">Durasi</th>
-                    <th class="p-3 text-left w-[20%]">Aksi</th>
-                </tr>
-            </thead>
-
-            <tbody id="layanan-table-body">
-                @foreach($layanan as $l)
-                    <tr class="border-b border-gray-300 text-gray-600">
-                        <td class="p-3">{{ $l->nama_layanan }}</td>
-                        <td class="p-3">Rp {{ number_format($l->nominal, 0, ',', '.') }}</td>
-                        <td class="p-3">{{ $l->deskripsi }}</td>
-                        <td class="p-3">{{ $l->durasi }} menit</td>
-                        <td class="p-3 flex gap-2">
-                            <a href="{{ route('admin.dashboard.layanan.edit', $l->layanan_id) }}"
-                               class="px-3 py-1 bg-mainGray text-white rounded">
-                                Edit
-                            </a>
-
-                            <form method="POST"
-                                  action="{{ route('admin.dashboard.layanan.destroy', $l->layanan_id) }}"
-                                  onsubmit="return confirm('Hapus layanan ini?')">
-                                @csrf @method('DELETE')
-                                <button class="px-3 py-1 bg-red-600 text-white rounded cursor-pointer">
-                                    Hapus
-                                </button>
-                            </form>
-                        </td>
+    <div class="px-6 pb-6 flex-1 min-h-0">
+        <div class="bg-white shadow rounded-lg border border-gray-200 flex flex-col h-full">
+            <div class="overflow-y-auto h-full relative scrollbar-thin scrollbar-thumb-gray-300">
+                <table class="w-full table-fixed border-separate border-spacing-0">
+                    <thead class="sticky top-0 z-10">
+                    <tr class="bg-gray-200 font-bold">
+                        <th class="p-3 text-left w-[30%] border-b border-gray-300 bg-gray-200">Nama Layanan</th>
+                        <th class="p-3 text-left w-[25%] border-b border-gray-300 bg-gray-200">Tarif</th>
+                        <th class="p-3 text-left w-[25%] border-b border-gray-300 bg-gray-200">Durasi</th>
+                        <th class="p-3 text-left w-[20%] border-b border-gray-300 bg-gray-200">Aksi</th>
                     </tr>
-                @endforeach
-            </tbody>
+                    </thead>
 
-        </table>
+                    <tbody id="layanan-table-body">
+                    @foreach($layanan as $l)
+                        <tr class="border-b border-gray-300 text-gray-600 hover:bg-gray-50 transition">
+                            <td class="p-3 border-b border-gray-100">{{ $l->nama_layanan }}</td>
+                            <td class="p-3 border-b border-gray-100">Rp {{ number_format($l->nominal, 0, ',', '.') }},00</td>
+                            <td class="p-3 border-b border-gray-100">{{ $l->durasi }} menit</td>
+                            <td class="p-3 border-b border-gray-100 flex gap-2">
+                                <a href="{{ route('admin.dashboard.layanan.edit', $l->layanan_id) }}"
+                                   class="px-3 py-1 bg-mainColor text-white rounded hover:bg-green-700 transition">
+                                    Edit
+                                </a>
+                                <form method="POST" action="{{ route('admin.dashboard.layanan.destroy', $l->layanan_id) }}"
+                                      onsubmit="return confirm('Hapus layanan ini?')">
+                                    @csrf @method('DELETE')
+                                    <button class="px-3 py-1 bg-red-600 text-white rounded cursor-pointer hover:bg-red-700 transition">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
 </div>
