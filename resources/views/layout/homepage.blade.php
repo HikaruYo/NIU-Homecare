@@ -14,6 +14,7 @@
         Pilih layanan, pilih waktu, dan kami akan datang ke rumah Anda.
     </div>
 
+    {{-- TODO: Renew the button animation --}}
     <div class="flex md:flex-row flex-col md:gap-6 gap-4 md:items-center items-left md:text-lg text-sm">
         <a href="#pesan" class="flex w-fit items-center gap-3 px-5 py-1 rounded-full bg-linear-to-br from-mainColor to-thirdColor hover:shadow-md transition duration-300">
             Pesan Sekarang

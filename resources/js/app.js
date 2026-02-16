@@ -702,3 +702,96 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target === modal) toggleModal();
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('detailModal');
+    const modalContent = document.getElementById('detailModalContent');
+    const cards = document.querySelectorAll('.booking-card');
+    const tooltip = document.getElementById('tooltip-msg');
+    const btnCancelSubmit = document.getElementById('btn-cancel-submit');
+    const cancelForm = document.getElementById('cancelForm');
+
+    // Pastikan modal ada sebelum menjalankan script
+    if (!modal) return;
+
+    const handleMouseMove = (e) => {
+        tooltip.style.left = (e.clientX + 15) + 'px';
+        tooltip.style.top = (e.clientY - 40) + 'px';
+    };
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const data = JSON.parse(card.dataset.booking);
+
+            // Isi data modal (pastikan ID ini ada di HTML)
+            if(document.getElementById('modal-nama')) document.getElementById('modal-nama').innerText = data.nama;
+            if(document.getElementById('modal-hp')) document.getElementById('modal-hp').innerText = data.no_hp || '-';
+            if(document.getElementById('modal-alamat')) document.getElementById('modal-alamat').innerText = data.alamat || '-';
+            if(document.getElementById('modal-jadwal')) document.getElementById('modal-jadwal').innerText = data.tanggal_indo;
+
+            const list = document.getElementById('modal-layanans-list');
+            if (list) {
+                list.innerHTML = data.layanans.map(l => `
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">${l.nama} (${l.durasi}m)</span>
+                        <span class="font-bold text-gray-900">Rp ${l.harga}</span>
+                    </div>`).join('');
+            }
+
+            // Logika Pembatalan (H-1)
+            const today = new Date(); today.setHours(0,0,0,0);
+            const bookingDate = new Date(data.tanggal_booking); bookingDate.setHours(0,0,0,0);
+            const diffTime = bookingDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            // Reset tombol cancel
+            btnCancelSubmit.disabled = false;
+            btnCancelSubmit.className = "w-full px-4 py-3 font-bold rounded-xl transition bg-red-50 text-red-600 hover:bg-red-100 cursor-pointer";
+            btnCancelSubmit.onmouseenter = null;
+            btnCancelSubmit.onmouseleave = null;
+
+            if (data.status === 'menunggu' || data.status === 'diterima') {
+                cancelForm.classList.remove('hidden');
+                cancelForm.action = `/booking/${data.id}/cancel`;
+
+                if (diffDays < 1) {
+                    btnCancelSubmit.disabled = true;
+                    btnCancelSubmit.className = "w-full px-4 py-3 font-bold rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed";
+                    btnCancelSubmit.onmouseenter = () => {
+                        tooltip.style.display = 'block';
+                        window.addEventListener('mousemove', handleMouseMove);
+                    };
+                    btnCancelSubmit.onmouseleave = () => {
+                        tooltip.style.display = 'none';
+                        window.removeEventListener('mousemove', handleMouseMove);
+                    };
+                }
+            } else {
+                cancelForm.classList.add('hidden');
+            }
+
+            // Munculkan Modal
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.replace('opacity-0', 'opacity-100');
+                modalContent.classList.replace('scale-95', 'scale-100');
+            }, 10);
+        });
+    });
+
+    // Close Modal Logic
+    const closeDetailModal = () => {
+        modalContent.classList.replace('opacity-100', 'opacity-0');
+        modalContent.classList.replace('scale-100', 'scale-95');
+        setTimeout(() => modal.classList.add('hidden'), 300);
+    };
+
+    document.querySelectorAll('.close-detail-modal').forEach(btn => {
+        btn.onclick = closeDetailModal;
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeDetailModal();
+    });
+});

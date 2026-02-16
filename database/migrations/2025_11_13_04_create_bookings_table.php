@@ -16,7 +16,7 @@ return new class extends Migration
             // FK ke tabel 'users' di kolom 'user_id'
             $table->foreignId('user_id')->constrained('users', 'user_id');
             $table->timestamp('tanggal_booking');
-            $table->enum('status', ['diterima', 'ditolak', 'menunggu']);
+            $table->enum('status', ['diterima', 'ditolak', 'menunggu', 'dibatalkan']);
             $table->timestamps();
         });
     }

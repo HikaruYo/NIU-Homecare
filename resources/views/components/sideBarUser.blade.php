@@ -35,10 +35,19 @@
         </nav>
     </div>
 
-    <div class="p-4 border-t border-mainGray/50">
+    <div class="flex flex-col p-4 gap-2 border-t border-mainGray/50">
+        <a href="/"
+            class="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold text-white bg-mainColor hover:bg-thirdColor/30 hover:text-mainColor rounded transition-colors duration-300"
+        >
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/>
+            </svg>
+            Kembali
+        </a>
+
         <form method="POST" action="{{ url('/logout') }}">
             @csrf
-            <button class="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold text-red-500 bg-red-50 hover:bg-red-100 rounded-xl transition-colors duration-200">
+            <button class="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold text-red-500 bg-red-50 hover:bg-red-100 rounded transition-colors duration-200 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>

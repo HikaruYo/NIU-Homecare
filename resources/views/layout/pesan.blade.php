@@ -1,5 +1,5 @@
-<div class="flex flex-col gap-8 px-28 pt-28 pb-10">
-    <div class="flex text-center gap-3 w-fit px-8 py-1 rounded-full bg-linear-to-br from-mainColor to-thirdColor">
+<div class="flex flex-col gap-4 px-28 pt-28">
+    <div class="flex text-center gap-3 w-fit px-8 py-1 mb-4 rounded-full bg-linear-to-br from-mainColor to-thirdColor">
         <svg class="h-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
             <path class="justify-center" fill="none" stroke="currentColor" stroke-linecap="round"
                   stroke-linejoin="round" stroke-width="2"
@@ -8,8 +8,8 @@
         Pesan Sekarang
     </div>
 
-    <div class="w-1/2 ">
-        Pesan layanan kami sekarang juga!
+    <div class="w-1/2">
+        Pesan layanan kami sekarang juga! <span class="text-gray-500 italic">* Syarat dan ketentuan berlaku</span>
     </div>
 
     {{-- Konten Utama --}}
@@ -126,6 +126,15 @@
             </div>
 
         </form>
+    </div>
+
+    <div class="flex gap-8 mt-4 text-gray-700">
+        <p>Syarat dan Ketentuan :</p>
+        <div class="flex flex-col">
+            <p>Minimal booking satu hari setelah pemesanan</p>
+            <p>Minimal booking sebanyak Rp. 100.000,00</p>
+            <p>Minimal pembatalan booking satu hari sebelum hari pemesanan</p>
+        </div>
     </div>
 </div>
 <script>

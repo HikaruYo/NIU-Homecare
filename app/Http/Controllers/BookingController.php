@@ -174,4 +174,25 @@ class BookingController extends Controller
             return back()->with('status', 'Terjadi kesalahan sistem: ' . $e->getMessage());
         }
     }
+
+    public function cancel($id)
+    {
+        $booking = Booking::where('booking_id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        $bookingDate = \Carbon\Carbon::parse($booking->tanggal_booking)->startOfDay();
+        $today = now()->startOfDay();
+
+        // Proteksi tambahan di sisi server (Security)
+        if ($today->diffInDays($bookingDate, false) < 1) {
+            return back()->with('status', 'Pembatalan gagal! Hanya bisa dilakukan maksimal H-1.');
+        }
+
+        // Update status
+        $booking->status = 'dibatalkan';
+        $booking->save();
+
+        return back()->with('status', 'Pesanan berhasil dibatalkan.');
+    }
 }

@@ -55,7 +55,7 @@ class DashboardController extends Controller
             ->orderBy('booking_id', 'desc');
 
         // Logika filter
-        if ($status && in_array($status, ['menunggu', 'diterima', 'ditolak'])) {
+        if ($status && in_array($status, ['menunggu', 'diterima', 'ditolak', 'dibatalkan'])) {
             $query->where('status', $status);
         }
 

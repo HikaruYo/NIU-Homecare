@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
     // Booking route
     Route::get('/booking', [BookingController::class, 'create'])->name('booking.create');
     Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+    Route::patch('/booking/{id}/cancel', [BookingController::class, 'cancel'])->name('booking.cancel');
 });
 
 Route::middleware(['admin'])->group(function () {

@@ -17,6 +17,10 @@ class Booking extends Model
         'status'
     ];
 
+    protected $casts = [
+        'tanggal_booking' => 'date'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
