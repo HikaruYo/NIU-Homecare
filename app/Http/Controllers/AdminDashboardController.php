@@ -171,7 +171,20 @@ class AdminDashboardController extends Controller
 
     public function laporan()
     {
-        $year = Carbon::now()->year;
+        $request = request();
+        $availableYears = Booking::selectRaw('YEAR(tanggal_booking) as year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year')
+            ->filter()
+            ->values();
+
+        $currentYear = Carbon::now()->year;
+        $year = (int) $request->query('year', $currentYear);
+        if (!$availableYears->contains($year)) {
+            $year = $availableYears->first() ?? $currentYear;
+        }
+
         $month = Carbon::now()->month;
 
         $rawBookingBulanan = Booking::selectRaw('MONTH(tanggal_booking) as bulan, COUNT(*) as total')
@@ -186,29 +199,56 @@ class AdminDashboardController extends Controller
             ];
         });
 
-        // Booking bulan ini
+        // Booking bulan ini (dari tahun terpilih)
         $totalBookingBulanIni = Booking::whereMonth('tanggal_booking', $month)
             ->whereYear('tanggal_booking', $year)
             ->count();
 
         // Booking per status
-        $bookingDiterima = Booking::where('status', 'diterima')->count();
-        $bookingMenunggu = Booking::where('status', 'menunggu')->count();
-        $bookingDitolak  = Booking::where('status', 'ditolak')->count();
-        $bookingDibatalkan  = Booking::where('status', 'dibatalkan')->count();
+        $bookingDiterima = Booking::where('status', 'diterima')->whereYear('tanggal_booking', $year)->count();
+        $bookingMenunggu = Booking::where('status', 'menunggu')->whereYear('tanggal_booking', $year)->count();
+        $bookingDitolak  = Booking::where('status', 'ditolak')->whereYear('tanggal_booking', $year)->count();
+        $bookingDibatalkan  = Booking::where('status', 'dibatalkan')->whereYear('tanggal_booking', $year)->count();
 
-        // Pendapatan (hanya yang diterima)
-        $pendapatan = BookingLayanan::join(
+        // Pendapatan per bulan (status diterima, tahun terpilih)
+        $rawPendapatanBulanan = BookingLayanan::join(
             'bookings',
             'booking_layanans.booking_id',
             '=',
             'bookings.booking_id'
         )
             ->where('bookings.status', 'diterima')
-            ->selectRaw('SUM(booking_layanans.harga) as total')
-            ->value('total');
+            ->whereYear('bookings.tanggal_booking', $year)
+            ->selectRaw('MONTH(bookings.tanggal_booking) as bulan, SUM(booking_layanans.harga) as total')
+            ->groupByRaw('MONTH(bookings.tanggal_booking)')
+            ->pluck('total', 'bulan');
+
+        $pendapatanBulanan = collect(range(1, 12))->map(function ($bulan) use ($rawPendapatanBulanan) {
+            return (float) ($rawPendapatanBulanan[$bulan] ?? 0);
+        });
+
+        $chartLabels = collect(range(1, 12))
+            ->map(fn ($bulan) => Carbon::create()->month($bulan)->translatedFormat('F'))
+            ->values();
+
+        $chartData = $pendapatanBulanan;
+        $chartLegend = 'Total Pendapatan Bulanan';
+
+        $bookingChartLabels = $chartLabels;
+        $bookingChartData = collect($bookingBulanan)->map(function ($item) {
+            return (int) $item->total;
+        })->values();
+
+        $pendapatan = $pendapatanBulanan->sum();
 
         return view('admin.dashboard.laporan', ['currentTab' => 'laporan',], compact(
+            'availableYears',
+            'year',
+            'chartLabels',
+            'chartData',
+            'chartLegend',
+            'bookingChartLabels',
+            'bookingChartData',
             'totalBookingBulanIni',
             'bookingDiterima',
             'bookingMenunggu',
