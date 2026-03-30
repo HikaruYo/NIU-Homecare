@@ -70,6 +70,7 @@
             <h3 class="text-xl font-semibold text-gray-700 mb-4">
                 Booking per Tahun {{ \Carbon\Carbon::now()->year }}
             </h3>
+            {{-- TODO: buat filter tahun --}}
 
             <div class="max-h-52 overflow-y-auto">
                 <table class="w-full text-left border-collapse">

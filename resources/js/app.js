@@ -793,3 +793,83 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target === modal) closeDetailModal();
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('adminDetailModal');
+    const modalContent = document.getElementById('adminDetailModalContent');
+    const rows = document.querySelectorAll('.admin-booking-row');
+
+    if (!modal || !modalContent || !rows.length) return;
+
+    const modalNama = document.getElementById('admin-modal-nama');
+    const modalHp = document.getElementById('admin-modal-hp');
+    const modalAlamat = document.getElementById('admin-modal-alamat');
+    const modalJadwal = document.getElementById('admin-modal-jadwal');
+    const modalTotal = document.getElementById('admin-modal-total');
+    const modalStatus = document.getElementById('admin-modal-status');
+    const modalStatusNote = document.getElementById('admin-modal-status-note');
+    const modalLayanansList = document.getElementById('admin-modal-layanans-list');
+    const acceptForm = document.getElementById('adminAcceptForm');
+    const rejectForm = document.getElementById('adminRejectForm');
+
+    const statusClassMap = {
+        menunggu: 'bg-yellow-200 text-yellow-800',
+        diterima: 'bg-green-200 text-green-800',
+        ditolak: 'bg-red-200 text-red-800',
+        dibatalkan: 'bg-gray-200 text-gray-800',
+    };
+
+    const closeModal = () => {
+        modalContent.classList.replace('opacity-100', 'opacity-0');
+        modalContent.classList.replace('scale-100', 'scale-95');
+        setTimeout(() => modal.classList.add('hidden'), 300);
+    };
+
+    rows.forEach((row) => {
+        row.addEventListener('click', () => {
+            const data = JSON.parse(row.dataset.booking);
+
+            modalNama.textContent = data.nama || '-';
+            modalHp.textContent = data.no_hp || '-';
+            modalAlamat.textContent = data.alamat || '-';
+            modalJadwal.textContent = `${data.tanggal_indo} • Jam ${data.jam_mulai}`;
+            modalTotal.textContent = `Rp ${data.total}`;
+            modalStatus.textContent = data.status_label || data.status;
+            modalStatus.className = `px-3 py-1 rounded-full text-xs font-bold uppercase ${statusClassMap[data.status] || 'bg-gray-200 text-gray-800'}`;
+
+            modalLayanansList.innerHTML = (data.layanans || []).map((layanan) => `
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">${layanan.nama} (${layanan.durasi}m)</span>
+                    <span class="font-bold text-gray-900">Rp ${layanan.harga}</span>
+                </div>
+            `).join('');
+
+            if (data.status === 'menunggu') {
+                acceptForm.classList.remove('hidden');
+                rejectForm.classList.remove('hidden');
+                modalStatusNote.classList.add('hidden');
+                acceptForm.action = data.update_url;
+                rejectForm.action = data.update_url;
+            } else {
+                acceptForm.classList.add('hidden');
+                rejectForm.classList.add('hidden');
+                modalStatusNote.classList.remove('hidden');
+                modalStatusNote.textContent = `Pesanan ini sudah ${data.status}.`;
+            }
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.replace('opacity-0', 'opacity-100');
+                modalContent.classList.replace('scale-95', 'scale-100');
+            }, 10);
+        });
+    });
+
+    document.querySelectorAll('.close-admin-detail-modal').forEach((btn) => {
+        btn.onclick = closeModal;
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+});
