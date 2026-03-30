@@ -359,6 +359,80 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// Search Booking untuk Admin
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('booking-search');
+    const tableBody = document.getElementById('booking-table-body');
+
+    if (!searchInput || !tableBody) return;
+
+    let timeout = null;
+
+    const statusClassMap = {
+        diterima: 'bg-green-200 text-green-800',
+        ditolak: 'bg-red-200 text-red-800',
+        dibatalkan: 'bg-gray-200 text-gray-800',
+        menunggu: 'bg-yellow-200 text-yellow-800',
+    };
+
+    const buildRows = (bookings) => {
+        if (!bookings.length) {
+            tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-10 text-gray-400">Tidak ada data pesanan.</td></tr>';
+            return;
+        }
+
+        tableBody.innerHTML = bookings.map((booking, index) => {
+            const payload = JSON.stringify(booking).replace(/'/g, '&#39;');
+            const layananList = (booking.layanans || [])
+                .map((detail) => `<li>${detail.nama} (${detail.durasi} menit)</li>`)
+                .join('');
+
+            return `
+                <tr class="admin-booking-row border-b border-gray-200 hover:bg-gray-50 transition cursor-pointer" data-booking='${payload}'>
+                    <td class="p-3 pl-6 text-left border-b border-gray-100">${index + 1}</td>
+                    <td class="p-3 pl-6 text-left border-b border-gray-100">
+                        <p class="font-medium text-gray-800">${booking.nama || '-'}</p>
+                        <p class="text-sm text-gray-500">${booking.no_hp || '-'}</p>
+                    </td>
+                    <td class="p-3 pl-6 text-left border-b border-gray-100">
+                        <p>${booking.tanggal_short || '-'}</p>
+                        <p class="text-sm font-bold text-mainColor">Jam ${booking.jam_mulai || '-'}</p>
+                    </td>
+                    <td class="p-3 pl-6 text-left text-sm border-b border-gray-100">
+                        <ul class="list-disc list-inside">${layananList}</ul>
+                        <p class="font-bold text-gray-800">${booking.total_display || '-'}</p>
+                    </td>
+                    <td class="p-3 text-center border-b border-gray-100">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase ${statusClassMap[booking.status] || 'bg-gray-200 text-gray-800'}">${booking.status || '-'}</span>
+                    </td>
+                    <td class="p-3 text-center border-b border-gray-100">
+                        <span class="text-gray-500 text-xs font-semibold uppercase">Klik untuk detail</span>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    };
+
+    searchInput.addEventListener('keyup', function () {
+        clearTimeout(timeout);
+
+        timeout = setTimeout(() => {
+            const keyword = this.value.trim();
+            const filter = this.dataset.filter || '';
+            const params = new URLSearchParams({ q: keyword });
+            if (filter) params.append('filter', filter);
+
+            fetch(`/admin/dashboard/booking/search?${params.toString()}`)
+                .then((response) => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then((data) => buildRows(data))
+                .catch((error) => console.error('Error saat search booking:', error));
+        }, 200);
+    });
+});
+
 
 // Logic untuk booking
 document.addEventListener("DOMContentLoaded", () => {
@@ -797,9 +871,8 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('adminDetailModal');
     const modalContent = document.getElementById('adminDetailModalContent');
-    const rows = document.querySelectorAll('.admin-booking-row');
 
-    if (!modal || !modalContent || !rows.length) return;
+    if (!modal || !modalContent) return;
 
     const modalNama = document.getElementById('admin-modal-nama');
     const modalHp = document.getElementById('admin-modal-hp');
@@ -825,9 +898,8 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => modal.classList.add('hidden'), 300);
     };
 
-    rows.forEach((row) => {
-        row.addEventListener('click', () => {
-            const data = JSON.parse(row.dataset.booking);
+        const showModal = (data) => {
+            if (!data) return;
 
             modalNama.textContent = data.nama || '-';
             modalHp.textContent = data.no_hp || '-';
@@ -862,7 +934,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 modalContent.classList.replace('opacity-0', 'opacity-100');
                 modalContent.classList.replace('scale-95', 'scale-100');
             }, 10);
-        });
+    };
+
+    document.addEventListener('click', (event) => {
+        const row = event.target.closest('.admin-booking-row');
+        if (!row) return;
+        if (!row.closest('#booking-table-body')) return;
+        if (event.target.closest('button, a, form, input')) return;
+
+        try {
+            const data = JSON.parse(row.dataset.booking);
+            showModal(data);
+        } catch (error) {
+            console.error('Gagal membaca data booking:', error);
+        }
     });
 
     document.querySelectorAll('.close-admin-detail-modal').forEach((btn) => {

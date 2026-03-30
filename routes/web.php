@@ -65,6 +65,8 @@ Route::middleware(['auth','admin'])->group(function () {
 
     Route::get('admin/dashboard/booking', [AdminDashboardController::class, 'booking'])
         ->name('admin.dashboard.booking');
+    Route::get('admin/dashboard/booking/search', [AdminDashboardController::class, 'searchBooking'])
+        ->name('admin.dashboard.booking.search');
     Route::put('admin/dashboard/booking/{id}', [AdminDashboardController::class, 'updateStatus'])
         ->name('admin.booking.update');
 

@@ -16,8 +16,20 @@
         </div>
     @endif
 
-    <div class="mx-6 py-2.5 text-4xl font-semibold border-b-2 border-gray-200">
-        Daftar Pesanan Masuk
+    <div class="flex justify-between items-center mx-6 py-2.5 border-b-2 border-gray-200">
+        <div>
+            <p class="text-4xl font-semibold">Daftar Pesanan Masuk</p>
+        </div>
+
+        <div class="flex items-center gap-2 py-1 px-3 rounded-full bg-white shadow">
+            <svg class="w-5 h-5 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+            </svg>
+            <input type="text" id="booking-search" data-filter="{{ $currentStatus ?? '' }}"
+                placeholder="Cari pesanan..." class="outline-none">
+        </div>
     </div>
 
     <div class="flex justify-between items-center w-full px-6">
@@ -65,7 +77,7 @@
                             <th class="p-3 text-center w-[15%] border-b border-gray-300 bg-gray-200">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="text-gray-600 font-light">
+                    <tbody id="booking-table-body" class="text-gray-600 font-light">
                         @forelse($bookings as $index => $booking)
                             @php
                                 $firstSlot = $booking->bookingSlots->sortBy('slotJadwal.waktu')->first();

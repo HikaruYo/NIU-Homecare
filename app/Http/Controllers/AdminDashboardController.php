@@ -111,6 +111,64 @@ class AdminDashboardController extends Controller
         return back()->with('success', "Booking telah {$newStatus}.");
     }
 
+    public function searchBooking(Request $request)
+    {
+        $keyword = trim((string) $request->query('q', ''));
+        $status = $request->query('filter');
+
+        $query = Booking::with(['user', 'bookingLayanans.layanan', 'bookingSlots.slotJadwal'])
+            ->orderBy('tanggal_booking', 'desc');
+
+        if ($status && in_array($status, ['menunggu', 'diterima', 'ditolak'])) {
+            $query->where('status', $status);
+        }
+
+        if ($keyword !== '') {
+            $query->where(function ($builder) use ($keyword) {
+                $builder->whereHas('user', function ($userQuery) use ($keyword) {
+                    $userQuery->where('username', 'like', "%{$keyword}%")
+                        ->orWhere('no_hp', 'like', "%{$keyword}%");
+                })
+                    ->orWhereDate('tanggal_booking', $keyword)
+                    ->orWhereRaw("DATE_FORMAT(tanggal_booking, '%d-%m-%Y') LIKE ?", ["%{$keyword}%"])
+                    ->orWhereRaw("DATE_FORMAT(tanggal_booking, '%d/%m/%Y') LIKE ?", ["%{$keyword}%"]);
+            });
+        }
+
+        $bookings = $query->limit(100)->get();
+
+        $result = $bookings->map(function ($booking) {
+            $firstSlot = $booking->bookingSlots->sortBy('slotJadwal.waktu')->first();
+            $jamMulai = $firstSlot ? Carbon::parse($firstSlot->slotJadwal->waktu)->format('H:i') : '-';
+            $total = $booking->bookingLayanans->sum('harga');
+            $tanggalIndo = Carbon::parse($booking->tanggal_booking)->locale('id')->isoFormat('dddd, D MMMM Y');
+
+            return [
+                'id' => $booking->booking_id,
+                'nama' => $booking->user->username ?? 'User Terhapus',
+                'no_hp' => $booking->user->no_hp ?? '-',
+                'alamat' => $booking->user->alamat ?? '-',
+                'tanggal_short' => Carbon::parse($booking->tanggal_booking)->locale('id')->format('d M Y'),
+                'tanggal_indo' => $tanggalIndo,
+                'jam_mulai' => $jamMulai,
+                'status' => $booking->status,
+                'status_label' => ucfirst($booking->status),
+                'total' => number_format($total, 0, ',', '.'),
+                'total_display' => 'Rp ' . number_format($total, 0, ',', '.') . ',00',
+                'update_url' => route('admin.booking.update', $booking->booking_id),
+                'layanans' => $booking->bookingLayanans->map(function ($detail) {
+                    return [
+                        'nama' => $detail->layanan->nama_layanan ?? '-',
+                        'durasi' => $detail->durasi,
+                        'harga' => number_format($detail->harga, 0, ',', '.'),
+                    ];
+                })->values(),
+            ];
+        })->values();
+
+        return response()->json($result);
+    }
+
     public function laporan()
     {
         $year = Carbon::now()->year;
