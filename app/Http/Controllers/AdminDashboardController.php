@@ -69,7 +69,7 @@ class AdminDashboardController extends Controller
         $query = Booking::with(['user', 'bookingLayanans.layanan', 'bookingSlots.slotJadwal'])
             ->orderBy('tanggal_booking', 'desc');
 
-        if ($status && in_array($status, ['menunggu', 'diterima', 'ditolak'])) {
+        if ($status && in_array($status, ['menunggu', 'diterima', 'ditolak', 'dibatalkan', 'selesai'])) {
             $query->where('status', $status);
         }
 
@@ -85,15 +85,24 @@ class AdminDashboardController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:diterima,ditolak'
+            'status' => 'required|in:diterima,ditolak,dibatalkan,selesai'
         ]);
 
         $booking = Booking::with('bookingSlots')->findOrFail($id);
         $oldStatus = $booking->status;
         $newStatus = $request->status;
 
-        // Jika booking ditolak, kembalikan slot menjadi svailable
-        if ($newStatus === 'ditolak' && $oldStatus !== 'ditolak') {
+        $allowedTransitions = [
+            'menunggu' => ['diterima', 'ditolak'],
+            'diterima' => ['selesai', 'dibatalkan'],
+        ];
+
+        if (!isset($allowedTransitions[$oldStatus]) || !in_array($newStatus, $allowedTransitions[$oldStatus])) {
+            return back()->with('status', 'Transisi status tidak valid untuk booking ini.');
+        }
+
+        // Jika booking ditolak / dibatalkan, slot jadwal dibuka kembali
+        if (in_array($newStatus, ['ditolak', 'dibatalkan'])) {
             // Ambil semua ID slot yang dipakai booking ini
             $slotIds = $booking->bookingSlots->pluck('slot_jadwal_id');
 
@@ -119,7 +128,7 @@ class AdminDashboardController extends Controller
         $query = Booking::with(['user', 'bookingLayanans.layanan', 'bookingSlots.slotJadwal'])
             ->orderBy('tanggal_booking', 'desc');
 
-        if ($status && in_array($status, ['menunggu', 'diterima', 'ditolak'])) {
+        if ($status && in_array($status, ['menunggu', 'diterima', 'ditolak', 'dibatalkan', 'selesai'])) {
             $query->where('status', $status);
         }
 
@@ -188,6 +197,7 @@ class AdminDashboardController extends Controller
         $month = Carbon::now()->month;
 
         $rawBookingBulanan = Booking::selectRaw('MONTH(tanggal_booking) as bulan, COUNT(*) as total')
+            ->where('status', 'selesai')
             ->whereYear('tanggal_booking', $year)
             ->groupBy('bulan')
             ->pluck('total', 'bulan');
@@ -200,7 +210,8 @@ class AdminDashboardController extends Controller
         });
 
         // Booking bulan ini (dari tahun terpilih)
-        $totalBookingBulanIni = Booking::whereMonth('tanggal_booking', $month)
+        $totalBookingBulanIni = Booking::where('status', 'selesai')
+            ->whereMonth('tanggal_booking', $month)
             ->whereYear('tanggal_booking', $year)
             ->count();
 
@@ -210,14 +221,14 @@ class AdminDashboardController extends Controller
         $bookingDitolak  = Booking::where('status', 'ditolak')->whereYear('tanggal_booking', $year)->count();
         $bookingDibatalkan  = Booking::where('status', 'dibatalkan')->whereYear('tanggal_booking', $year)->count();
 
-        // Pendapatan per bulan (status diterima, tahun terpilih)
+        // Pendapatan per bulan (status selesai, tahun terpilih)
         $rawPendapatanBulanan = BookingLayanan::join(
             'bookings',
             'booking_layanans.booking_id',
             '=',
             'bookings.booking_id'
         )
-            ->where('bookings.status', 'diterima')
+            ->where('bookings.status', 'selesai')
             ->whereYear('bookings.tanggal_booking', $year)
             ->selectRaw('MONTH(bookings.tanggal_booking) as bulan, SUM(booking_layanans.harga) as total')
             ->groupByRaw('MONTH(bookings.tanggal_booking)')
@@ -258,5 +269,12 @@ class AdminDashboardController extends Controller
             'bookingBulanan'
 
         ));
+    }
+
+    public function jadwal()
+    {
+        return view('admin.dashboard.jadwal', array_merge($this->userData(), [
+            'currentTab' => 'jadwal',
+        ]));
     }
 }

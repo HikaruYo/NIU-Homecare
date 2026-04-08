@@ -11,7 +11,7 @@
     <div class="mx-6 py-3 border-b-2 border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div>
             <h1 class="text-4xl font-semibold text-gray-800">Laporan Penghasilan</h1>
-            <p class="text-sm text-gray-500 mt-1">Ringkasan performa booking dan pendapatan untuk tahun
+            <p class="text-sm text-gray-500 mt-1">Ringkasan performa booking selesai dan pendapatan untuk tahun
                 {{ $year }}.</p>
         </div>
 
@@ -31,7 +31,7 @@
     <div class="grid grid-cols-2 lg:grid-cols-5 mx-6 gap-3">
         <!-- Total Booking Bulan Ini -->
         <div class="bg-white px-4 py-3 rounded-xl shadow-sm border border-gray-100">
-            <p class="text-gray-400 text-xs">Booking Bulan Ini</p>
+            <p class="text-gray-400 text-xs">Booking Selesai Bulan Ini</p>
             <h2 class="text-2xl font-bold text-mainColor leading-tight mt-1">
                 {{ $totalBookingBulanIni }}
             </h2>
@@ -73,25 +73,30 @@
     <div class="mx-6 bg-white rounded-2xl shadow border border-gray-100 p-2 md:p-4">
         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 border-b border-gray-100 pb-4 mb-4">
             <div>
-                <p class="text-gray-400 text-xs">Total Pendapatan Tahun {{ $year }}</p>
+                <p class="text-gray-400 text-xs">Total Pendapatan Booking Selesai Tahun {{ $year }}</p>
                 <h2 class="text-3xl font-bold text-mainColor mt-1">Rp {{ number_format($pendapatan, 0, ',', '.') }}
                 </h2>
             </div>
             <p class="text-sm text-gray-500">Akumulasi booking dengan status <span
-                    class="font-semibold text-mainColor">diterima</span>.</p>
+                    class="font-semibold text-mainColor">selesai</span>.</p>
         </div>
 
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
             <div class="rounded-xl border border-gray-100 bg-gray-50/60 p-3">
-                <h3 class="text-sm font-semibold text-gray-700 mb-2">Grafik Pendapatan Bulanan {{ $year }}</h3>
+                <div class="flex justify-between text-sm font-semibold text-gray-700 mb-2">
+                    <h3>Grafik Pendapatan Booking Selesai {{ $year }}</h3>
+                    <a href="#" class="text-mainColor">Detail</a>
+                </div>
                 <div class="h-64">
                     <canvas id="pendapatanLineChart"></canvas>
                 </div>
             </div>
 
             <div class="rounded-xl border border-gray-100 bg-gray-50/60 p-3">
-                <h3 class="text-sm font-semibold text-gray-700 mb-2">Grafik Jumlah Booking Bulanan {{ $year }}
-                </h3>
+                <div class="flex justify-between text-sm font-semibold text-gray-700 mb-2">
+                    <h3>Grafik Jumlah Booking Selesai {{ $year }}</h3>
+                    <a href="#" class="text-mainColor">Detail</a>
+                </div>
                 <div class="h-64">
                     <canvas id="bookingLineChart"></canvas>
                 </div>

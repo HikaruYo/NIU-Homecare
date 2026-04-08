@@ -71,4 +71,6 @@ Route::middleware(['auth','admin'])->group(function () {
         ->name('admin.booking.update');
 
     Route::get('admin/dashboard/laporan', [AdminDashboardController::class, 'laporan'])->name('admin.dashboard.laporan');
+    
+    Route::get('admin/dashboard/jadwal', [AdminDashboardController::class, 'jadwal'])->name('admin.dashboard.jadwal');
 });

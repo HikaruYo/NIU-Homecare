@@ -57,6 +57,10 @@
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Diterima</a>
                 <a href="{{ route('admin.dashboard.booking', ['filter' => 'ditolak']) }}"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Ditolak</a>
+                <a href="{{ route('admin.dashboard.booking', ['filter' => 'dibatalkan']) }}"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dibatalkan</a>
+                <a href="{{ route('admin.dashboard.booking', ['filter' => 'selesai']) }}"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Selesai</a>
             </div>
         </div>
     </div>
@@ -142,9 +146,11 @@
                                             ? 'bg-green-200 text-green-800'
                                             : ($booking->status == 'ditolak'
                                                 ? 'bg-red-200 text-red-800'
-                                                : ($booking->status == 'dibatalkan'
-                                                    ? 'bg-gray-200 text-gray-800'
-                                                    : 'bg-yellow-200 text-yellow-800')) }}
+                                                : ($booking->status == 'selesai'
+                                                    ? 'bg-blue-200 text-blue-800'
+                                                    : ($booking->status == 'dibatalkan'
+                                                        ? 'bg-gray-200 text-gray-800'
+                                                        : 'bg-yellow-200 text-yellow-800'))) }}
                                     ">
                                         {{ $booking->status }}
                                     </span>
@@ -237,6 +243,28 @@
                             <button type="submit"
                                 class="w-full px-4 py-3 bg-green-50 text-green-600 font-bold rounded-xl hover:bg-green-100 transition cursor-pointer">
                                 Terima
+                            </button>
+                        </form>
+
+                        <form id="adminCompleteForm" method="POST" class="flex-1 hidden"
+                            onsubmit="return confirm('Tandai booking ini sebagai selesai?');">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="status" value="selesai">
+                            <button type="submit"
+                                class="w-full px-4 py-3 bg-blue-50 text-blue-600 font-bold rounded-xl hover:bg-blue-100 transition cursor-pointer">
+                                Selesai
+                            </button>
+                        </form>
+
+                        <form id="adminCancelAcceptedForm" method="POST" class="flex-1 hidden"
+                            onsubmit="return confirm('Batalkan booking ini?');">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="status" value="dibatalkan">
+                            <button type="submit"
+                                class="w-full px-4 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition cursor-pointer">
+                                Batalkan
                             </button>
                         </form>
                     </div>

@@ -372,6 +372,7 @@ document.addEventListener('DOMContentLoaded', function () {
         diterima: 'bg-green-200 text-green-800',
         ditolak: 'bg-red-200 text-red-800',
         dibatalkan: 'bg-gray-200 text-gray-800',
+        selesai: 'bg-blue-200 text-blue-800',
         menunggu: 'bg-yellow-200 text-yellow-800',
     };
 
@@ -884,12 +885,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalLayanansList = document.getElementById('admin-modal-layanans-list');
     const acceptForm = document.getElementById('adminAcceptForm');
     const rejectForm = document.getElementById('adminRejectForm');
+    const completeForm = document.getElementById('adminCompleteForm');
+    const cancelAcceptedForm = document.getElementById('adminCancelAcceptedForm');
 
     const statusClassMap = {
         menunggu: 'bg-yellow-200 text-yellow-800',
         diterima: 'bg-green-200 text-green-800',
         ditolak: 'bg-red-200 text-red-800',
         dibatalkan: 'bg-gray-200 text-gray-800',
+        selesai: 'bg-blue-200 text-blue-800',
     };
 
     const closeModal = () => {
@@ -919,12 +923,24 @@ document.addEventListener('DOMContentLoaded', function () {
             if (data.status === 'menunggu') {
                 acceptForm.classList.remove('hidden');
                 rejectForm.classList.remove('hidden');
+                completeForm.classList.add('hidden');
+                cancelAcceptedForm.classList.add('hidden');
                 modalStatusNote.classList.add('hidden');
                 acceptForm.action = data.update_url;
                 rejectForm.action = data.update_url;
+            } else if (data.status === 'diterima') {
+                acceptForm.classList.add('hidden');
+                rejectForm.classList.add('hidden');
+                completeForm.classList.remove('hidden');
+                cancelAcceptedForm.classList.remove('hidden');
+                modalStatusNote.classList.add('hidden');
+                completeForm.action = data.update_url;
+                cancelAcceptedForm.action = data.update_url;
             } else {
                 acceptForm.classList.add('hidden');
                 rejectForm.classList.add('hidden');
+                completeForm.classList.add('hidden');
+                cancelAcceptedForm.classList.add('hidden');
                 modalStatusNote.classList.remove('hidden');
                 modalStatusNote.textContent = `Pesanan ini sudah ${data.status}.`;
             }
