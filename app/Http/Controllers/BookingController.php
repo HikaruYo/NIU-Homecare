@@ -42,7 +42,11 @@ class BookingController extends Controller
         // Validasi ketersediaan slot, mencegah tabrakan jadwal
         foreach ($req->slot_jadwal_id as $slotId) {
             // Cek apakah slot sudah dipesan orang lain
-            $isBooked = \App\Models\BookingSlot::where('slot_jadwal_id', $slotId)->exists();
+            $isBooked = \App\Models\BookingSlot::where('slot_jadwal_id', $slotId)
+                ->whereHas('booking', function ($query) {
+                    $query->whereIn('status', ['menunggu', 'diterima']);
+                })
+                ->exists();
             // Cek juga apakah slot masih available
             $isSlotTaken = \App\Models\SlotJadwal::where('slot_jadwal_id', $slotId)
                 ->where('is_available', false)
@@ -193,6 +197,13 @@ class BookingController extends Controller
         // Update status
         $booking->status = 'dibatalkan';
         $booking->save();
+
+        $slotIds = $booking->bookingSlots()->pluck('slot_jadwal_id');
+        if ($slotIds->isNotEmpty()) {
+            SlotJadwal::whereIn('slot_jadwal_id', $slotIds)->update([
+                'is_available' => true,
+            ]);
+        }
 
         return back()->with('status', 'Pesanan berhasil dibatalkan.');
     }

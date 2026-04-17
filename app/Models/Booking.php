@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -39,5 +41,42 @@ class Booking extends Model
     public function transaksi(): HasOne
     {
         return $this->hasOne(DetailTransaksi::class, 'booking_id', 'booking_id');
+    }
+
+    public static function autoCancelPendingHPlusTwo(): int
+    {
+        $cutoffDate = Carbon::today()->subDays(2);
+
+        $expiredBookings = static::query()
+            ->with('bookingSlots')
+            ->where('status', 'menunggu')
+            ->whereDate('tanggal_booking', '<=', $cutoffDate)
+            ->get();
+
+        if ($expiredBookings->isEmpty()) {
+            return 0;
+        }
+
+        $updatedCount = 0;
+
+        DB::transaction(function () use ($expiredBookings, &$updatedCount) {
+            foreach ($expiredBookings as $booking) {
+                $slotIds = $booking->bookingSlots->pluck('slot_jadwal_id')->filter()->all();
+
+                if (!empty($slotIds)) {
+                    SlotJadwal::whereIn('slot_jadwal_id', $slotIds)->update([
+                        'is_available' => true,
+                    ]);
+                }
+
+                $booking->update([
+                    'status' => 'dibatalkan',
+                ]);
+
+                $updatedCount++;
+            }
+        });
+
+        return $updatedCount;
     }
 }

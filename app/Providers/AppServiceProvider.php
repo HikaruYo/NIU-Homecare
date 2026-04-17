@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Booking;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if ($this->app->runningInConsole()) {
+            return;
+        }
+
+        if (!Schema::hasTable('bookings') || !Schema::hasTable('slot_jadwals') || !Schema::hasTable('booking_slots')) {
+            return;
+        }
+
+        Booking::autoCancelPendingHPlusTwo();
     }
 }
