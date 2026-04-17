@@ -30,13 +30,15 @@ class BookingController extends Controller
     public function store(Request $req)
     {
         $req->validate([
-            'tanggal_booking' => 'required|date',
+            'tanggal_booking' => 'required|date|after:today',
             'layanan_id'      => 'required|array',
             'layanan_id.*'    => 'required|exists:layanans,layanan_id',
             'durasi'          => 'required|array', // Durasi dari input user
             'slot_jadwal_id'  => 'required|array',
             'no_hp'           => 'string|max:15',
             'alamat'          => 'string|max:255',
+        ], [
+            'tanggal_booking.after' => 'Minimal booking dilakukan untuk H+1 dari hari ini.',
         ]);
 
         // Validasi ketersediaan slot, mencegah tabrakan jadwal
@@ -55,6 +57,32 @@ class BookingController extends Controller
             if ($isBooked || $isSlotTaken) {
                 return back()->with('error', 'Maaf, salah satu slot waktu baru saja dipesan orang lain. Silakan pilih waktu ulang.');
             }
+        }
+
+        $layanans = Layanan::whereIn('layanan_id', $req->layanan_id)
+            ->get()
+            ->keyBy('layanan_id');
+
+        $totalTagihan = 0;
+        foreach ($req->layanan_id as $key => $layananId) {
+            $layan = $layanans->get($layananId);
+            if (!$layan) {
+                return back()->with('error', 'Layanan tidak ditemukan. Silakan pilih ulang layanan.');
+            }
+
+            $durasiInput = (int) ($req->durasi[$key] ?? 30);
+
+            if ($layan->is_flexible_duration) {
+                $harga = ($durasiInput / 30) * $layan->harga_per_30menit;
+            } else {
+                $harga = $layan->nominal;
+            }
+
+            $totalTagihan += (int) $harga;
+        }
+
+        if ($totalTagihan < 100000) {
+            return back()->with('error', 'Minimal total booking adalah Rp 100.000,00.');
         }
 
         $tanggalBooking = \Carbon\Carbon::parse($req->tanggal_booking)->format('d-m-Y');
@@ -83,7 +111,7 @@ class BookingController extends Controller
             // Simpan layanan dan hitung harga sesuai durasi pilihan user
             // Menggunakan $key untuk mencocokkan layanan ke-sekian dengan durasi ke-sekian
             foreach ($req->layanan_id as $key => $layananId) {
-                $layan = Layanan::find($layananId);
+                $layan = $layanans->get($layananId);
                 // Ambil durasi dari input user (jika merupakan layanan dengan durasi fleksibel
                 // fallback int 30 jika kosong/error
                 $durasiInput = (int) ($req->durasi[$key] ?? 30);
