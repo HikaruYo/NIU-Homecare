@@ -102,7 +102,7 @@
                                     name="alamat"
                                     rows="3"
                                     class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-mainColor focus:outline-none"
-                                    placeholder="Jl. Contoh No. 123, Kelurahan, Kecamatan..."
+                                    placeholder="Masukkan alamat lengkap atau share lokasi untuk kedatangan petugas."
                                     required
                                 >{{ optional(Auth::user())->alamat }}</textarea>
                             </div>

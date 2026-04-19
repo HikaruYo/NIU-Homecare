@@ -65,9 +65,9 @@
         </div>
     </div>
 
-    <div class="px-6 flex-1 min-h-0">
-        <div class="bg-white shadow rounded-lg border border-gray-200 flex flex-col h-full">
-            <div class="overflow-y-auto h-full relative scrollbar-thin scrollbar-thumb-gray-300">
+    <div class="px-6 flex-1 min-h-0 flex flex-col">
+        <div class="bg-white shadow rounded-lg border border-gray-200 flex flex-col flex-1 min-h-0">
+            <div class="overflow-y-auto flex-1 min-h-0 relative scrollbar-thin scrollbar-thumb-gray-300">
                 <table class="w-full table-fixed border-separate border-spacing-0">
                     <thead class="sticky top-0 z-10">
                         <tr class="bg-gray-200 font-bold">
@@ -167,6 +167,10 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <div class="pt-3 pb-1 flex justify-end">
+            {{ $bookings->links() }}
         </div>
     </div>
 
@@ -273,7 +277,4 @@
         </div>
     </div>
 
-    <div>
-        {{ $bookings->links() }}
-    </div>
 </div>

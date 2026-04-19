@@ -164,7 +164,7 @@
                 <div class="flex flex-col gap-1">
                     <label for="alamat" class="text-sm font-semibold text-gray-700 ml-1">Alamat Lengkap</label>
                     <textarea name="alamat" id="alamat" rows="3"
-                              placeholder="Masukkan alamat lengkap untuk kedatangan petugas"
+                              placeholder="Masukkan alamat lengkap atau share lokasi untuk kedatangan petugas."
                               class="w-full p-3 bg-gray-50 border border-gray-200 rounded-md focus:ring-2 focus:ring-mainColor focus:border-mainColor outline-none transition @error('alamat') border-red-500 @enderror">{{ old('alamat', $alamat) }}</textarea>
                     @error('alamat')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
