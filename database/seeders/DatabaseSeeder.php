@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call(SlotJadwalSeeder::class);
+        $this->call(BookingSeeder::class);
 
     }
 }

@@ -250,6 +250,54 @@ class AdminDashboardController extends Controller
             return (int) $item->total;
         })->values();
 
+        $completedBookings = Booking::with(['user', 'bookingLayanans.layanan', 'bookingSlots.slotJadwal'])
+            ->where('status', 'selesai')
+            ->whereYear('tanggal_booking', $year)
+            ->orderBy('tanggal_booking', 'asc')
+            ->orderBy('booking_id', 'asc')
+            ->get();
+
+        $reportGroups = $completedBookings
+            ->groupBy(function ($booking) {
+                return Carbon::parse($booking->tanggal_booking)->format('m');
+            })
+            ->map(function ($bookingsByMonth, $monthNumber) {
+                $monthNumber = (int) $monthNumber;
+
+                return [
+                    'month' => $monthNumber,
+                    'label' => Carbon::create()->month($monthNumber)->locale('id')->isoFormat('MMMM'),
+                    'items' => $bookingsByMonth->map(function ($booking) {
+                        $firstSlot = $booking->bookingSlots->sortBy('slotJadwal.waktu')->first();
+                        $jamMulai = $firstSlot ? Carbon::parse($firstSlot->slotJadwal->waktu)->format('H:i') : '-';
+                        $total = $booking->bookingLayanans->sum('harga');
+
+                        return [
+                            'id' => $booking->booking_id,
+                            'nama' => $booking->user->username ?? 'User Terhapus',
+                            'no_hp' => $booking->user->no_hp ?? '-',
+                            'alamat' => $booking->user->alamat ?? '-',
+                            'tanggal_short' => Carbon::parse($booking->tanggal_booking)->locale('id')->format('d M Y'),
+                            'tanggal_indo' => Carbon::parse($booking->tanggal_booking)->locale('id')->isoFormat('dddd, D MMMM Y'),
+                            'jam_mulai' => $jamMulai,
+                            'status' => $booking->status,
+                            'status_label' => ucfirst($booking->status),
+                            'total' => (int) $total,
+                            'total_display' => 'Rp ' . number_format($total, 0, ',', '.') . ',00',
+                            'layanans' => $booking->bookingLayanans->map(function ($detail) {
+                                return [
+                                    'nama' => $detail->layanan->nama_layanan ?? '-',
+                                    'durasi' => $detail->durasi,
+                                    'harga' => number_format($detail->harga, 0, ',', '.'),
+                                ];
+                            })->values(),
+                        ];
+                    })->values(),
+                ];
+            })
+            ->sortBy('month')
+            ->values();
+
         $pendapatan = $pendapatanBulanan->sum();
 
         return view('admin.dashboard.laporan', ['currentTab' => 'laporan',], compact(
@@ -260,6 +308,7 @@ class AdminDashboardController extends Controller
             'chartLegend',
             'bookingChartLabels',
             'bookingChartData',
+            'reportGroups',
             'totalBookingBulanIni',
             'bookingDiterima',
             'bookingMenunggu',
