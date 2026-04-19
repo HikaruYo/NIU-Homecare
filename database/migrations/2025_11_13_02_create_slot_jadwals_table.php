@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->time('waktu');
             $table->boolean('is_available')->default(true);
+            $table->boolean('is_disabled')->default(false);
             $table->timestamps();
         });
     }

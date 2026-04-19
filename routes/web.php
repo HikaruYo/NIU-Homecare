@@ -73,4 +73,10 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::get('admin/dashboard/laporan', [AdminDashboardController::class, 'laporan'])->name('admin.dashboard.laporan');
     
     Route::get('admin/dashboard/jadwal', [AdminDashboardController::class, 'jadwal'])->name('admin.dashboard.jadwal');
+    Route::patch('admin/dashboard/jadwal/day', [AdminDashboardController::class, 'updateJadwalDayStatus'])
+        ->name('admin.dashboard.jadwal.day');
+    Route::patch('admin/dashboard/jadwal/range', [AdminDashboardController::class, 'updateJadwalRangeStatus'])
+        ->name('admin.dashboard.jadwal.range');
+    Route::patch('admin/dashboard/jadwal/{slot}', [AdminDashboardController::class, 'updateJadwalSlotStatus'])
+        ->name('admin.dashboard.jadwal.slot');
 });

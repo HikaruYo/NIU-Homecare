@@ -67,7 +67,7 @@ class AdminDashboardController extends Controller
         $status = $request->query('filter');
 
         $query = Booking::with(['user', 'bookingLayanans.layanan', 'bookingSlots.slotJadwal'])
-            ->orderBy('tanggal_booking', 'desc');
+            ->orderBy('tanggal_booking', 'desc'); // Urutkan berdasarkan tanggal booking terbaru terlebih dahulu
 
         if ($status && in_array($status, ['menunggu', 'diterima', 'ditolak', 'dibatalkan', 'selesai'])) {
             $query->where('status', $status);
@@ -126,7 +126,7 @@ class AdminDashboardController extends Controller
         $status = $request->query('filter');
 
         $query = Booking::with(['user', 'bookingLayanans.layanan', 'bookingSlots.slotJadwal'])
-            ->orderBy('tanggal_booking', 'desc');
+            ->orderBy('tanggal_booking', 'desc'); // Urutkan berdasarkan tanggal booking terbaru terlebih dahulu
 
         if ($status && in_array($status, ['menunggu', 'diterima', 'ditolak', 'dibatalkan', 'selesai'])) {
             $query->where('status', $status);
@@ -273,8 +273,115 @@ class AdminDashboardController extends Controller
 
     public function jadwal()
     {
+        $selectedDate = request()->query('tanggal', Carbon::tomorrow()->toDateString());
+
+        $availableDates = SlotJadwal::query()
+            ->select('tanggal')
+            ->distinct()
+            ->orderBy('tanggal', 'asc')
+            ->pluck('tanggal')
+            ->map(fn ($date) => Carbon::parse($date)->toDateString());
+
+        if (!$availableDates->contains($selectedDate)) {
+            $selectedDate = $availableDates->first() ?? Carbon::tomorrow()->toDateString();
+        }
+
+        $slots = SlotJadwal::query()
+            ->whereDate('tanggal', $selectedDate)
+            ->orderBy('waktu', 'asc')
+            ->get();
+
+        $timeOptions = $slots
+            ->pluck('waktu')
+            ->map(fn ($time) => Carbon::parse($time)->format('H:i'))
+            ->values();
+
+        $totalSlots = $slots->count();
+        $disabledSlots = $slots->where('is_disabled', true)->count();
+        $bookedSlots = $slots->where('is_disabled', false)->where('is_available', false)->count();
+        $availableSlots = $slots->where('is_disabled', false)->where('is_available', true)->count();
+
         return view('admin.dashboard.jadwal', array_merge($this->userData(), [
             'currentTab' => 'jadwal',
+            'selectedDate' => $selectedDate,
+            'selectedDateLabel' => Carbon::parse($selectedDate)->locale('id')->isoFormat('dddd, D MMMM Y'),
+            'availableDates' => $availableDates,
+            'slots' => $slots,
+            'timeOptions' => $timeOptions,
+            'totalSlots' => $totalSlots,
+            'disabledSlots' => $disabledSlots,
+            'bookedSlots' => $bookedSlots,
+            'availableSlots' => $availableSlots,
         ]));
+    }
+
+    public function updateJadwalDayStatus(Request $request)
+    {
+        $validated = $request->validate([
+            'tanggal' => 'required|date',
+            'action' => 'required|in:disable,enable',
+        ]);
+
+        $isDisabled = $validated['action'] === 'disable';
+
+        $updated = SlotJadwal::query()
+            ->whereDate('tanggal', $validated['tanggal'])
+            ->update([
+                'is_disabled' => $isDisabled,
+            ]);
+
+        $statusText = $isDisabled ? 'dinonaktifkan' : 'diaktifkan kembali';
+
+        return redirect()
+            ->route('admin.dashboard.jadwal', ['tanggal' => $validated['tanggal']])
+            ->with('status', "Berhasil {$statusText} untuk {$updated} slot pada tanggal terpilih.");
+    }
+
+    public function updateJadwalRangeStatus(Request $request)
+    {
+        $validated = $request->validate([
+            'tanggal' => 'required|date',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'action' => 'required|in:disable,enable',
+        ]);
+
+        $isDisabled = $validated['action'] === 'disable';
+
+        $updated = SlotJadwal::query()
+            ->whereDate('tanggal', $validated['tanggal'])
+            ->whereTime('waktu', '>=', $validated['start_time'])
+            ->whereTime('waktu', '<', $validated['end_time'])
+            ->update([
+                'is_disabled' => $isDisabled,
+            ]);
+
+        $statusText = $isDisabled ? 'dinonaktifkan' : 'diaktifkan kembali';
+
+        return redirect()
+            ->route('admin.dashboard.jadwal', ['tanggal' => $validated['tanggal']])
+            ->with('status', "Rentang jam berhasil {$statusText} untuk {$updated} slot.");
+    }
+
+    public function updateJadwalSlotStatus(Request $request, $slot)
+    {
+        $validated = $request->validate([
+            'tanggal' => 'required|date',
+            'action' => 'required|in:disable,enable',
+        ]);
+
+        $slotJadwal = SlotJadwal::query()->findOrFail($slot);
+        $isDisabled = $validated['action'] === 'disable';
+
+        $slotJadwal->update([
+            'is_disabled' => $isDisabled,
+        ]);
+
+        $statusText = $isDisabled ? 'dinonaktifkan' : 'diaktifkan kembali';
+        $jam = Carbon::parse($slotJadwal->waktu)->format('H:i');
+
+        return redirect()
+            ->route('admin.dashboard.jadwal', ['tanggal' => $validated['tanggal']])
+            ->with('status', "Slot {$jam} berhasil {$statusText}.");
     }
 }

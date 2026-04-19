@@ -54,7 +54,11 @@ class BookingController extends Controller
                 ->where('is_available', false)
                 ->exists();
 
-            if ($isBooked || $isSlotTaken) {
+            $isSlotDisabled = \App\Models\SlotJadwal::where('slot_jadwal_id', $slotId)
+                ->where('is_disabled', true)
+                ->exists();
+
+            if ($isBooked || $isSlotTaken || $isSlotDisabled) {
                 return back()->with('error', 'Maaf, salah satu slot waktu baru saja dipesan orang lain. Silakan pilih waktu ulang.');
             }
         }
