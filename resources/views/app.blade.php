@@ -42,16 +42,13 @@
 
     @include('layout.header')
 
-    {{-- TODO: masukkan gambar sebagai background dengan slider otomatis --}}
-    <div id="beranda" class="h-screen bg-gray-50"
+    <div id="beranda" class="h-screen"
         style="
-            {{-- background-image: url('{{ asset('assets/potong-rambut.jpeg') }}'); --}}
+            background-image: url('{{ asset('assets/homeBG.jpg') }}');
+            background-repeat: no-repeat;
             background-size: cover;
-            background-position: center;
+            background-position: center center;
         ">
-        <div class="md:h-0 h-1/2">
-            test
-        </div>
         <div class="md:h-full h-1/2">
             @include('layout.homepage')
         </div>

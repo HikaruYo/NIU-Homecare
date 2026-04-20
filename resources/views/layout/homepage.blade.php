@@ -5,22 +5,21 @@
         Bawa ketenangan ke hidupmu
     </div>
 
-    <div class="md:w-1/2 w-full font-semibold md:text-5xl text-2xl">
+    <div class="text-white md:w-1/2 w-full font-semibold md:text-5xl text-2xl">
         Pesan Layanan Kami di Mana Saja dan Kapan Saja
     </div>
 
-    <div class="md:w-1/2 w-full">
+    <div class="text-white md:w-1/2 w-full">
         Butuh perawatan cepat tanpa ribet? NIU menyediakan layanan homecare yang fleksibel dan mudah dipesan.
         Pilih layanan, pilih waktu, dan kami akan datang ke rumah Anda.
     </div>
 
-    {{-- TODO: Renew the button animation --}}
     <div class="flex md:flex-row flex-col md:gap-6 gap-4 md:items-center items-left md:text-lg text-sm">
         <a href="#pesan" class="flex w-fit items-center gap-3 px-5 py-1 rounded-full bg-linear-to-br from-mainColor to-thirdColor hover:shadow-md transition duration-300">
             Pesan Sekarang
             <svg class="bg-white rounded-full md:w-8 w-4 md:h-8 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-6 6l6-6m-6-6l6 6"/></svg>
         </a>
-        <a href="#layanan" class="w-fit px-5 py-1 rounded-full border-[1px] bg-white hover:shadow-md transition duration-300">
+        <a href="#layanan" class="w-fit px-5 py-1 rounded-full bg-white hover:shadow-md transition duration-300">
             Layanan Kami
         </a>
     </div>
